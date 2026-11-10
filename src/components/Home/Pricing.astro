@@ -132,12 +132,29 @@ const t = {
   }
 }[lang];
 
+// NORYVIO_LAUNCH_OFFER_V1
+// Ціни до старту акції вже були поточними. Вищі тарифи — заплановані ПІСЛЯ акції,
+// а не нібито історичні ціни продажу. Не називайте їх "стара ціна".
+const launchEndsAt = "2026-12-01T23:59:59+02:00";
+const launchStartsAt = "2026-11-12T00:00:00+02:00";
+const launchOfferActiveAtBuild = Date.now() >= Date.parse(launchStartsAt) && Date.now() <= Date.parse(launchEndsAt);
+const standardPrices = {
+  landing: { deposit: 2990, monthly: 690 },
+  business: { deposit: 5990, monthly: 1290 },
+  commerce: { deposit: 9990, monthly: 2290 }
+} as const;
+const currentPrice = (plan: typeof plans[number]) => {
+  const standard = standardPrices[plan.id];
+  return launchOfferActiveAtBuild ? { deposit: plan.deposit, monthly: plan.monthly } : standard;
+};
+
 const defaultPlan = plans[0];
-const defaultTotal = defaultPlan.deposit + 12 * defaultPlan.monthly;
+const defaultPrice = currentPrice(defaultPlan);
+const defaultTotal = defaultPrice.deposit + 12 * defaultPrice.monthly;
 const contactUrl = localizedPath("/#contacts", lang);
 ---
 
-<section id="pricing" class="np3-section" data-np3-pricing data-lang={lang} aria-labelledby="np3-title">
+<section id="pricing" class="np3-section" data-np3-pricing data-lang={lang} data-promo-start={launchStartsAt} data-promo-end={launchEndsAt} aria-labelledby="np3-title">
   <div class="np3-ambient" aria-hidden="true"></div>
 
   <div class="np3-container">
@@ -154,6 +171,19 @@ const contactUrl = localizedPath("/#contacts", lang);
       {t.offer}
     </p>
 
+    <div class="np3-launch" data-np3-launch hidden aria-label={lang === "uk" ? "Стартові ціни Noryvio" : "Noryvio launch pricing"}>
+      <div class="np3-launch__text">
+        <strong>{lang === "uk" ? "Стартові ціни на запуск Noryvio" : "Noryvio launch prices"}</strong>
+        <span>{lang === "uk" ? "Діють до 1 грудня 2026 включно. Після цієї дати застосовуються нові стандартні тарифи." : "Valid through December 1, 2026. Standard prices apply afterwards."}</span>
+      </div>
+      <div class="np3-launch__clock" aria-label={lang === "uk" ? "Час до завершення стартових цін" : "Time left for launch prices"}>
+        <b data-np3-days>00</b><small>{lang === "uk" ? "дн" : "days"}</small>
+        <b data-np3-hours>00</b><small>{lang === "uk" ? "год" : "hrs"}</small>
+        <b data-np3-minutes>00</b><small>{lang === "uk" ? "хв" : "min"}</small>
+        <b data-np3-seconds>00</b><small>{lang === "uk" ? "с" : "sec"}</small>
+      </div>
+    </div>
+
     <div class="np3-plans" role="group" aria-label={lang === "uk" ? "Типи сайтів" : "Website types"}>
       {plans.map((plan, index) => (
         <div class="np3-plan-slot" data-np3-reveal data-np3-delay={index * 90}>
@@ -169,13 +199,19 @@ const contactUrl = localizedPath("/#contacts", lang);
 
             <h3>{plan.name[lang]}</h3>
             <p class="np3-plan__monthly">
-              <strong>{money(plan.monthly)}</strong>
+              <strong data-np3-display-monthly>{money(currentPrice(plan).monthly)}</strong>
               <span>/ {lang === "uk" ? "міс. × 12" : "mo. × 12"}</span>
             </p>
 
+            <p class="np3-plan__future" data-np3-future hidden>
+              {lang === "uk" ? "Після акції:" : "After launch offer:"}
+              <strong>{money(standardPrices[plan.id].deposit)} + 12 × {money(standardPrices[plan.id].monthly)}</strong>
+              <span>({money(standardPrices[plan.id].deposit + 12 * standardPrices[plan.id].monthly)})</span>
+            </p>
+
             <div class="np3-plan__details">
-              <div><span>{t.deposit}</span><strong>{money(plan.deposit)}</strong></div>
-              <div><span>{t.full}</span><strong>{money(plan.deposit + plan.monthly * 12)}</strong></div>
+              <div><span>{t.deposit}</span><strong data-np3-display-deposit>{money(currentPrice(plan).deposit)}</strong></div>
+              <div><span>{t.full}</span><strong data-np3-display-total>{money(currentPrice(plan).deposit + currentPrice(plan).monthly * 12)}</strong></div>
               <div><span>{t.support}</span><strong>{money(plan.support)} / {lang === "uk" ? "міс." : "mo."}</strong></div>
             </div>
 
@@ -192,8 +228,12 @@ const contactUrl = localizedPath("/#contacts", lang);
               type="button"
               class="np3-plan__choose"
               data-np3-select={plan.id}
-              data-deposit={plan.deposit}
-              data-monthly={plan.monthly}
+              data-deposit={currentPrice(plan).deposit}
+              data-promo-deposit={plan.deposit}
+              data-standard-deposit={standardPrices[plan.id].deposit}
+              data-monthly={currentPrice(plan).monthly}
+              data-promo-monthly={plan.monthly}
+              data-standard-monthly={standardPrices[plan.id].monthly}
               data-support={plan.support}
               data-name={plan.name[lang]}
               aria-pressed={index === 0 ? "true" : "false"}
@@ -245,7 +285,7 @@ const contactUrl = localizedPath("/#contacts", lang);
 
         <div class="np3-current">
           <span id="np3-current-label">{t.currentRegular}</span>
-          <strong id="np3-current-value">{money(defaultPlan.monthly)}</strong>
+          <strong id="np3-current-value">{money(defaultPrice.monthly)}</strong>
         </div>
       </div>
 
@@ -255,8 +295,8 @@ const contactUrl = localizedPath("/#contacts", lang);
         <p id="np3-period" class="np3-period">{t.totalFor} 12 {t.months}</p>
 
         <div class="np3-breakdown">
-          <div><span>{t.depositPart}</span><strong id="np3-deposit">{money(defaultPlan.deposit)}</strong></div>
-          <div><span>{t.installmentsPart}</span><strong id="np3-installments">{money(defaultPlan.monthly * 12)}</strong></div>
+          <div><span>{t.depositPart}</span><strong id="np3-deposit">{money(defaultPrice.deposit)}</strong></div>
+          <div><span>{t.installmentsPart}</span><strong id="np3-installments">{money(defaultPrice.monthly * 12)}</strong></div>
           <div><span>{t.supportPart}</span><strong id="np3-support">{money(0)}</strong></div>
           <div class="np3-breakdown__remaining"><span>{t.remains}</span><strong id="np3-remaining">{money(0)}</strong></div>
         </div>
@@ -286,6 +326,49 @@ const contactUrl = localizedPath("/#contacts", lang);
     const supportCheckbox = root.querySelector<HTMLInputElement>("#np3-add-support");
     const buttons = [...root.querySelectorAll<HTMLButtonElement>("[data-np3-select]")];
     let active = buttons[0];
+
+    // Single fixed deadline shared by all visitors. No page-load reset.
+    const startMs = Date.parse(root.dataset.promoStart || "");
+    const endMs = Date.parse(root.dataset.promoEnd || "");
+    const banner = root.querySelector<HTMLElement>("[data-np3-launch]");
+    const futurePrices = [...root.querySelectorAll<HTMLElement>("[data-np3-future]")];
+    let lastPromoState: boolean | undefined;
+    function syncOffer() {
+      const now = Date.now();
+      const isActive = Number.isFinite(endMs) && now >= startMs && now <= endMs;
+      if (banner) banner.hidden = !isActive;
+      for (const el of futurePrices) el.hidden = !isActive;
+      if (isActive && banner) {
+        let seconds = Math.max(0, Math.floor((endMs - now) / 1000));
+        const days = Math.floor(seconds / 86400); seconds %= 86400;
+        const hours = Math.floor(seconds / 3600); seconds %= 3600;
+        const minutes = Math.floor(seconds / 60); seconds %= 60;
+        const labels = ["days", "hours", "minutes", "seconds"];
+        const nums = [days, hours, minutes, seconds];
+        labels.forEach((key, i) => {
+          const node = banner.querySelector<HTMLElement>(`[data-np3-${key}]`);
+          if (node) node.textContent = String(nums[i]).padStart(2, "0");
+        });
+      }
+      if (lastPromoState !== isActive) {
+        lastPromoState = isActive;
+        for (const button of buttons) {
+          const card = button.closest(".np3-plan");
+          const deposit = Number(button.dataset[isActive ? "promoDeposit" : "standardDeposit"]);
+          const monthly = Number(button.dataset[isActive ? "promoMonthly" : "standardMonthly"]);
+          button.dataset.deposit = String(deposit);
+          button.dataset.monthly = String(monthly);
+          const monthlyEl = card?.querySelector<HTMLElement>("[data-np3-display-monthly]");
+          const depositEl = card?.querySelector<HTMLElement>("[data-np3-display-deposit]");
+          const totalEl = card?.querySelector<HTMLElement>("[data-np3-display-total]");
+          if (monthlyEl) monthlyEl.textContent = money(monthly);
+          if (depositEl) depositEl.textContent = money(deposit);
+          if (totalEl) totalEl.textContent = money(deposit + 12 * monthly);
+        }
+        update();
+      }
+    }
+    // Timer starts after calculator labels and update() are initialized.
 
     const labels = isUk
       ? {
