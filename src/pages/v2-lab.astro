@@ -1,0 +1,442 @@
+
+---
+import "../styles/v2/tokens.css";
+import Icon from "../components/ui/Icon.astro";
+
+const benefits = [
+  {
+    icon: "bolt" as const,
+    title: "Швидкість",
+    description: "Легкі сторінки без зайвого навантаження."
+  },
+  {
+    icon: "shield" as const,
+    title: "Надійність",
+    description: "Продумана архітектура й захист форм."
+  },
+  {
+    icon: "monitor" as const,
+    title: "Адаптивність",
+    description: "Якісний інтерфейс на кожному екрані."
+  }
+];
+---
+
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>Noryvio 2.0 — Design Lab</title>
+  </head>
+
+  <body>
+    <main class="nv2-lab">
+      <div class="nv2-atmosphere" aria-hidden="true"></div>
+
+      <div class="nv2-container">
+        <header class="nv2-header">
+          <a class="nv2-logo" href="/">
+            <span class="nv2-logo-symbol" aria-hidden="true">◇</span>
+            noryvio<span>.</span>
+          </a>
+
+          <span class="nv2-lab-label">
+            DESIGN SYSTEM / V2
+          </span>
+        </header>
+
+        <section class="nv2-hero">
+          <div class="nv2-eyebrow">
+            <span class="nv2-dot"></span>
+            НОВИЙ РІВЕНЬ NORYVIO
+          </div>
+
+          <h1>
+            Створюємо
+            <span>новий стандарт.</span>
+          </h1>
+
+          <p>
+            Фундамент преміального цифрового досвіду:
+            виразна типографіка, точні деталі,
+            глибина та продумана взаємодія.
+          </p>
+
+          <div class="nv2-actions">
+            <a class="nv2-button nv2-button-primary" href="#components">
+              Дослідити компоненти
+              <Icon name="arrow-up-right" size={19} />
+            </a>
+
+            <a class="nv2-button nv2-button-outline" href="/">
+              Повернутися на сайт
+              <Icon name="arrow-right" size={19} />
+            </a>
+          </div>
+        </section>
+
+        <section id="components" class="nv2-components">
+          <div class="nv2-section-heading">
+            <span>01 / ОСНОВА ІНТЕРФЕЙСУ</span>
+            <h2>Єдина мова дизайну</h2>
+          </div>
+
+          <div class="nv2-cards">
+            {benefits.map((item) => (
+              <article class="nv2-card">
+                <span class="nv2-card-icon">
+                  <Icon name={item.icon} size={29} />
+                </span>
+
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+
+                <span class="nv2-card-decoration" aria-hidden="true"></span>
+              </article>
+            ))}
+          </div>
+
+          <div class="nv2-palette">
+            <div class="nv2-color nv2-color-bg"></div>
+            <div class="nv2-color nv2-color-surface"></div>
+            <div class="nv2-color nv2-color-accent"></div>
+            <div class="nv2-color nv2-color-bright"></div>
+          </div>
+        </section>
+      </div>
+    </main>
+  </body>
+</html>
+
+<style>
+  :global(*) {
+    box-sizing: border-box;
+  }
+
+  :global(html) {
+    scroll-behavior: smooth;
+  }
+
+  :global(body) {
+    margin: 0;
+    background: #070d12;
+  }
+
+  :global(body),
+  :global(button) {
+    font-family: var(--nv2-font);
+  }
+
+  .nv2-lab {
+    min-height: 100vh;
+    overflow: hidden;
+    position: relative;
+    isolation: isolate;
+    background: var(--nv2-bg-deep);
+    color: var(--nv2-text);
+  }
+
+  .nv2-atmosphere {
+    position: absolute;
+    z-index: -1;
+    inset: 0 0 auto;
+    height: 850px;
+    pointer-events: none;
+    background:
+      radial-gradient(
+        ellipse 46% 45% at 82% 25%,
+        rgba(14, 226, 185, 0.23),
+        transparent 75%
+      ),
+      radial-gradient(
+        ellipse 35% 35% at 10% 70%,
+        rgba(3, 135, 122, 0.11),
+        transparent 85%
+      );
+  }
+
+  .nv2-container {
+    width: min(
+      calc(100% - 2 * var(--nv2-gutter)),
+      var(--nv2-container)
+    );
+    margin-inline: auto;
+  }
+
+  .nv2-header {
+    min-height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+  }
+
+  .nv2-logo {
+    color: white;
+    text-decoration: none;
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: -1.8px;
+  }
+
+  .nv2-logo > span:last-child,
+  .nv2-logo-symbol {
+    color: var(--nv2-accent);
+  }
+
+  .nv2-logo-symbol {
+    margin-right: 8px;
+  }
+
+  .nv2-lab-label {
+    color: var(--nv2-text-muted);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    font-weight: 700;
+  }
+
+  .nv2-hero {
+    max-width: 860px;
+    padding-block: clamp(80px, 12vw, 150px);
+  }
+
+  .nv2-eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    color: var(--nv2-accent);
+    font-size: 12px;
+    font-weight: 800;
+    letter-spacing: 0.17em;
+  }
+
+  .nv2-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--nv2-accent);
+    box-shadow: 0 0 18px var(--nv2-accent);
+  }
+
+  h1 {
+    margin: 30px 0 24px;
+    max-width: 950px;
+    font-size: clamp(52px, 7.2vw, 106px);
+    line-height: 1.02;
+    letter-spacing: -0.065em;
+    font-weight: 800;
+  }
+
+  h1 span {
+    display: block;
+    background: var(--nv2-gradient-accent);
+    color: transparent;
+    background-clip: text;
+  }
+
+  .nv2-hero > p {
+    max-width: 620px;
+    color: var(--nv2-text-muted);
+    font-size: clamp(16px, 1.7vw, 19px);
+    line-height: 1.75;
+  }
+
+  .nv2-actions {
+    display: flex;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 36px;
+  }
+
+  .nv2-button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    min-height: 54px;
+    padding: 14px 24px;
+    border-radius: var(--nv2-radius-pill);
+    font-size: 14px;
+    font-weight: 800;
+    text-decoration: none;
+    transition:
+      transform var(--nv2-duration-normal) var(--nv2-ease),
+      border-color var(--nv2-duration-normal) var(--nv2-ease),
+      box-shadow var(--nv2-duration-normal) var(--nv2-ease);
+  }
+
+  .nv2-button:hover {
+    transform: translateY(-3px);
+  }
+
+  .nv2-button:focus-visible {
+    outline: 2px solid var(--nv2-accent-bright);
+    outline-offset: 4px;
+  }
+
+  .nv2-button-primary {
+    color: var(--nv2-accent-ink);
+    background: var(--nv2-gradient-accent);
+    box-shadow: 0 8px 34px rgba(36, 229, 193, 0.18);
+  }
+
+  .nv2-button-primary:hover {
+    box-shadow: var(--nv2-glow-active);
+  }
+
+  .nv2-button-outline {
+    color: white;
+    border: 1px solid var(--nv2-border-strong);
+    background: rgba(6, 18, 21, 0.5);
+  }
+
+  .nv2-button-outline:hover {
+    border-color: var(--nv2-accent);
+  }
+
+  .nv2-components {
+    padding-bottom: 110px;
+  }
+
+  .nv2-section-heading > span {
+    color: var(--nv2-accent);
+    letter-spacing: 0.16em;
+    font-size: 11px;
+    font-weight: 800;
+  }
+
+  .nv2-section-heading h2 {
+    margin: 12px 0 30px;
+    font-size: clamp(28px, 3.2vw, 44px);
+    letter-spacing: -0.05em;
+  }
+
+  .nv2-cards {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 20px;
+  }
+
+  .nv2-card {
+    position: relative;
+    overflow: hidden;
+    min-height: 245px;
+    padding: 28px;
+    border: 1px solid var(--nv2-border);
+    border-radius: var(--nv2-radius-lg);
+    background: var(--nv2-gradient-card);
+    box-shadow: var(--nv2-shadow-card);
+    transition:
+      transform var(--nv2-duration-normal) var(--nv2-ease),
+      border-color var(--nv2-duration-normal) var(--nv2-ease);
+  }
+
+  .nv2-card:hover {
+    transform: translateY(-5px);
+    border-color: var(--nv2-border-strong);
+  }
+
+  .nv2-card-icon {
+    display: inline-flex;
+    color: var(--nv2-accent);
+    margin-bottom: 38px;
+  }
+
+  .nv2-card h3 {
+    margin: 0 0 10px;
+    font-size: 23px;
+    letter-spacing: -0.04em;
+  }
+
+  .nv2-card p {
+    margin: 0;
+    color: var(--nv2-text-muted);
+    line-height: 1.65;
+    font-size: 14px;
+  }
+
+  .nv2-card-decoration {
+    position: absolute;
+    width: 180px;
+    height: 180px;
+    border-radius: 50%;
+    right: -110px;
+    bottom: -110px;
+    background: rgba(36, 229, 193, 0.17);
+    filter: blur(48px);
+    pointer-events: none;
+  }
+
+  .nv2-palette {
+    display: flex;
+    gap: 12px;
+    margin-top: 32px;
+  }
+
+  .nv2-color {
+    height: 48px;
+    flex: 1;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+  }
+
+  .nv2-color-bg {
+    background: var(--nv2-bg);
+  }
+
+  .nv2-color-surface {
+    background: var(--nv2-surface-raised);
+  }
+
+  .nv2-color-accent {
+    background: var(--nv2-accent);
+  }
+
+  .nv2-color-bright {
+    background: var(--nv2-accent-bright);
+  }
+
+  @media (max-width: 760px) {
+    .nv2-header {
+      min-height: 78px;
+    }
+
+    .nv2-lab-label {
+      font-size: 9px;
+    }
+
+    .nv2-hero {
+      padding-block: 85px 95px;
+    }
+
+    .nv2-cards {
+      grid-template-columns: 1fr;
+    }
+
+    .nv2-card {
+      min-height: 200px;
+    }
+
+    .nv2-card-icon {
+      margin-bottom: 24px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    :global(html) {
+      scroll-behavior: auto;
+    }
+
+    .nv2-button,
+    .nv2-card {
+      transition: none;
+    }
+
+    .nv2-button:hover,
+    .nv2-card:hover {
+      transform: none;
+    }
+  }
+</style>

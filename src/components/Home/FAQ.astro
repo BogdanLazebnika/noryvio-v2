@@ -1,0 +1,283 @@
+---
+import "./FAQ.css";
+import Icon from "../ui/Icon.astro";
+import { getLangFromUrl, localizedPath } from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+
+// Keep these answers aligned with Pricing.astro and the agreed service terms.
+// A deposit + 12 monthly payments covers website development.
+const content = {
+  uk: {
+    eyebrow: "05 / ЧАСТІ ЗАПИТАННЯ",
+    title: "Усе важливе.",
+    accent: "Без зайвих питань.",
+    description:
+      "Розповідаємо про оплату частинами, домен, розробку й підтримку. Прозорі умови ще до першого платежу.",
+    countLabel: "ВІДПОВІДЕЙ НА ГОЛОВНЕ",
+    noteEyebrow: "ЗРОЗУМІЛА МОДЕЛЬ ОПЛАТИ",
+    noteTitle: "Аванс + 12 платежів",
+    noteText:
+      "Ви сплачуєте початковий внесок, а решту вартості розробки — рівними платежами після запуску сайту.",
+    noteLink: "Порахувати вартість",
+    bottomEyebrow: "ЗАЛИШИЛИСЬ ЗАПИТАННЯ?",
+    bottomTitle: "Обговоримо ваш проєкт особисто.",
+    bottomText:
+      "Розкажіть, який сайт потрібен. Уточнимо функції, строки та остаточні умови без прихованих обіцянок.",
+    bottomCta: "Залишити заявку",
+    questions: [
+      {
+        question: "Чи потрібно оплачувати всю розробку одразу?",
+        answer:
+          "Ні. Спочатку вносите аванс: 1 990 ₴ для Landing Page, 3 990 ₴ для Business Website або 6 990 ₴ для базового E-commerce. Після запуску сайту сплачуєте ще 12 рівних щомісячних платежів відповідно до обраного пакета. Повну суму показує калькулятор у розділі тарифів. Графік фіксуємо до початку роботи."
+      },
+      {
+        question: "Яка повна вартість кожного типу сайту?",
+        answer:
+          "Базовий Landing Page — 7 870 ₴, Business Website — 14 670 ₴, невеликий E-commerce — від 24 870 ₴ за погодженого стандартного функціоналу. Це аванс разом із 12 платежами за розробку. Складні інтеграції, нестандартні функції та додаткові роботи оцінюємо окремо до замовлення."
+      },
+      {
+        question: "Що покриває перший внесок і коли починається робота?",
+        answer:
+          "Початковий внесок — частина загальної вартості розробки, а не додаткова плата. Перед оплатою узгоджуємо структуру сайту, обсяг робіт, строки, кількість правок і графік платежів. Після погодження умов та внесення авансу беремо проєкт у роботу."
+      },
+      {
+        question: "Домен, хостинг і SSL справді входять у ціну?",
+        answer:
+          "Так. У базову пропозицію включені хостинг і SSL на перший рік, а також реєстрація домену на перший рік у межах 800 ₴. Якщо обраний домен коштує дорожче, різницю погоджуємо окремо. Домен оформлюємо на замовника; після першого року його продовження оплачується за актуальним тарифом реєстратора."
+      },
+      {
+        question: "Що відбувається після 12 платежів?",
+        answer:
+          "Після авансу й усіх 12 платежів розробка сайту повністю оплачена. Подальший супровід необов'язковий: орієнтир — 299 ₴/міс. для Landing Page, 499 ₴/міс. для Business Website та 999 ₴/міс. для E-commerce. Хостинг після першого року і склад підтримки уточнюємо в умовах супроводу. Домен продовжується окремо."
+      },
+      {
+        question: "Чи означає підтримка роботу спеціаліста 24/7 і безлімітні правки?",
+        answer:
+          "Ні. Доступність сайту та автоматичний моніторинг — не те саме, що цілодобове ручне обслуговування. Час відповіді, кількість невеликих правок і порядок усунення проблем погоджуємо для вашого пакета. Нові сторінки, функції та великі зміни розраховуємо окремо."
+      },
+      {
+        question: "Чи можна адаптувати дизайн, фотографії та тексти?",
+        answer:
+          "Так. Підлаштовуємо кольори, логотип, зображення, тексти й погоджені блоки під ваш бренд. Кількість раундів правок і межі змін фіксуємо до старту, щоб вартість була передбачуваною. Складні анімації або нестандартні модулі можуть потребувати окремого розрахунку."
+      },
+      {
+        question: "Скільки часу потрібно на створення сайту?",
+        answer:
+          "Залежить від типу сайту, готовності текстів та фотографій, необхідних інтеграцій і швидкості погодження. Перед авансом складаємо план із конкретними етапами та орієнтовними строками. Не обіцяємо однаковий термін для лендингу та інтернет-магазину."
+      },
+      {
+        question: "Чи буде сайт адаптивним і підготовленим до Google?",
+        answer:
+          "Так. У базову розробку входять адаптивність для основних розмірів екранів і технічна SEO-підготовка: структура заголовків, метадані та коректна розмітка сторінок. Позиції в Google та кількість майбутніх заявок не гарантуємо — вони залежать також від контенту, конкуренції та просування."
+      },
+      {
+        question: "Чи можу я згодом перенести сайт до іншого провайдера?",
+        answer:
+          "Так, ми плануємо можливість передачі файлів і перенесення сайту після повної оплати розробки. Домен належить замовнику. Порядок передачі доступів, майнових прав і залежностей від сторонніх сервісів фіксуємо в договорі до початку роботи."
+      }
+    ]
+  },
+  en: {
+    eyebrow: "05 / FREQUENTLY ASKED QUESTIONS",
+    title: "The important details.",
+    accent: "Clearly explained.",
+    description:
+      "Answers about installments, domains, development and support. Clear terms before the first payment.",
+    countLabel: "QUESTIONS ANSWERED",
+    noteEyebrow: "STRAIGHTFORWARD PAYMENTS",
+    noteTitle: "Deposit + 12 payments",
+    noteText:
+      "Pay an initial deposit, then cover the remaining development cost in equal monthly installments after launch.",
+    noteLink: "Calculate your price",
+    bottomEyebrow: "STILL HAVE A QUESTION?",
+    bottomTitle: "Let's discuss your project.",
+    bottomText:
+      "Tell us what you need. We'll confirm the features, timeframe and final terms before work begins.",
+    bottomCta: "Send an enquiry",
+    questions: [
+      {
+        question: "Do I have to pay for the entire website upfront?",
+        answer:
+          "No. Your deposit is 1,990 UAH for a Landing Page, 3,990 UAH for a Business Website or 6,990 UAH for a basic E-commerce site. After launch, there are 12 equal monthly development payments for your selected package. The pricing calculator displays the full amount. We agree on the schedule before work starts."
+      },
+      {
+        question: "What is the full price of each website type?",
+        answer:
+          "A basic Landing Page costs 7,870 UAH, a Business Website 14,670 UAH, and a small E-commerce site starts at 24,870 UAH with an agreed standard scope. These totals include the deposit and 12 development payments. Custom integrations, non-standard features and extra work are quoted separately."
+      },
+      {
+        question: "What does the deposit cover?",
+        answer:
+          "The deposit is part of the total development price, not an extra fee. Before payment, we agree on the site structure, scope, timeline, revisions and payment schedule. Work starts after the terms are agreed and the deposit is paid."
+      },
+      {
+        question: "Are the domain, hosting and SSL really included?",
+        answer:
+          "Yes. Basic hosting and SSL for the first year are included, as is first-year domain registration up to 800 UAH. If your chosen domain costs more, we agree on the difference separately. The domain is registered to the client, and subsequent renewals are charged at the registrar's current rate."
+      },
+      {
+        question: "What happens after the 12 development payments?",
+        answer:
+          "Once the deposit and all 12 payments are complete, development has been paid in full. Ongoing support is optional: indicative rates are 299 UAH/month for Landing Pages, 499 UAH/month for Business Websites and 999 UAH/month for E-commerce. Hosting after year one and support scope are agreed separately. Domain renewal is separate."
+      },
+      {
+        question: "Does support mean 24/7 staff and unlimited changes?",
+        answer:
+          "No. Site availability and automated monitoring are different from round-the-clock human support. Response times, included small changes and incident handling are agreed for your package. New pages, features and significant revisions are quoted separately."
+      },
+      {
+        question: "Can we change the design, images and text?",
+        answer:
+          "Yes. We tailor colors, logos, imagery, copy and agreed sections to your brand. The number of revision rounds and scope of changes are defined before work begins. Complex animations or custom functionality may require an additional quote."
+      },
+      {
+        question: "How long will website development take?",
+        answer:
+          "Timelines depend on the type of site, content readiness, integrations and the speed of approvals. Before the deposit, we'll agree on a plan with project stages and an estimated timeframe. A landing page and an online store do not have identical timelines."
+      },
+      {
+        question: "Will the website be mobile-friendly and SEO-ready?",
+        answer:
+          "Yes. Base development includes responsive design for major screen sizes and technical SEO fundamentals such as heading structure, metadata and accessible page markup. We cannot guarantee search rankings or a certain number of leads; those also depend on content, competition and promotion."
+      },
+      {
+        question: "Can I move my website to another provider later?",
+        answer:
+          "Yes. Our intended model allows website files to be transferred once development is fully paid. The domain belongs to the client. The transfer of access, intellectual property rights and third-party service dependencies will be defined in the agreement before work starts."
+      }
+    ]
+  }
+} as const;
+
+const t = content[lang];
+const pricingUrl = localizedPath("/#pricing", lang);
+const contactUrl = localizedPath("/#contacts", lang);
+const questionCount = String(t.questions.length).padStart(2, "0");
+---
+
+<section
+  id="faq"
+  class="nf2-section"
+  data-nf2-faq
+  aria-labelledby="nf2-title"
+>
+  <div class="nf2-ambient" aria-hidden="true"></div>
+
+  <div class="nf2-container">
+    <div class="nf2-layout">
+      <div class="nf2-intro" data-nf2-reveal>
+        <p class="nf2-eyebrow">
+          <span class="nf2-eyebrow__dot" aria-hidden="true"></span>
+          {t.eyebrow}
+        </p>
+
+        <h2 id="nf2-title">
+          {t.title}
+          <span>{t.accent}</span>
+        </h2>
+
+        <p class="nf2-intro__description">{t.description}</p>
+
+        <div class="nf2-counter" aria-hidden="true">
+          <strong data-nf2-current>01</strong>
+          <span class="nf2-counter__separator">/</span>
+          <span>{questionCount}</span>
+          <small>{t.countLabel}</small>
+        </div>
+
+        <aside class="nf2-side-card">
+          <div class="nf2-side-card__icon" aria-hidden="true">
+            <Icon name="shield" size={25} />
+          </div>
+
+          <div class="nf2-side-card__body">
+            <p class="nf2-side-card__eyebrow">{t.noteEyebrow}</p>
+            <h3>{t.noteTitle}</h3>
+            <p>{t.noteText}</p>
+            <a href={pricingUrl}>
+              {t.noteLink}
+              <Icon name="arrow-up-right" size={17} />
+            </a>
+          </div>
+        </aside>
+      </div>
+
+      <div class="nf2-list" aria-label={lang === "uk" ? "Часті запитання" : "Frequently asked questions"}>
+        {t.questions.map((item, index) => (
+          <details
+            class="nf2-item"
+            name="noryvio-faq"
+            open={index === 0}
+            data-nf2-reveal
+            data-nf2-delay={Math.min(index * 45, 180)}
+          >
+            <summary class="nf2-question">
+              <span class="nf2-question__index">
+                {String(index + 1).padStart(2, "0")}
+              </span>
+              <span class="nf2-question__label">{item.question}</span>
+              <span class="nf2-question__toggle" aria-hidden="true"></span>
+            </summary>
+
+            <div class="nf2-answer">
+              <p>{item.answer}</p>
+            </div>
+          </details>
+        ))}
+      </div>
+    </div>
+
+    <div class="nf2-bottom" data-nf2-reveal>
+      <div class="nf2-bottom__icon" aria-hidden="true">
+        <Icon name="bolt" size={23} />
+      </div>
+      <div class="nf2-bottom__copy">
+        <span>{t.bottomEyebrow}</span>
+        <h3>{t.bottomTitle}</h3>
+        <p>{t.bottomText}</p>
+      </div>
+      <a class="nf2-bottom__cta" href={contactUrl}>
+        {t.bottomCta}
+        <Icon name="arrow-up-right" size={18} />
+      </a>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { registerReveals } from "../../scripts/reveal";
+
+  function initNoryvioFAQ() {
+    const sections = document.querySelectorAll<HTMLElement>("[data-nf2-faq]");
+
+    sections.forEach((section) => {
+      if (section.dataset.nf2Ready === "true") return;
+      section.dataset.nf2Ready = "true";
+
+      const items = Array.from(
+        section.querySelectorAll<HTMLDetailsElement>(".nf2-item")
+      );
+      const counter = section.querySelector<HTMLElement>("[data-nf2-current]");
+      const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+      // Native <details> and name grouping remain fully functional without JS.
+      const updateCounter = () => {
+        const active = items.findIndex((item) => item.open);
+        if (counter) {
+          counter.textContent = active < 0
+            ? "—"
+            : String(active + 1).padStart(2, "0");
+        }
+      };
+      items.forEach((item) => item.addEventListener("toggle", updateCounter));
+      updateCounter();
+
+      // Scroll reveals now use shared hysteresis and a single scroll listener.
+      registerReveals(section, "[data-nf2-reveal]", "data-nf2-delay", 660);
+    });
+  }
+
+  initNoryvioFAQ();
+  document.addEventListener("astro:page-load", initNoryvioFAQ);
+</script>

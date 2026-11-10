@@ -1,0 +1,100 @@
+
+---
+import "./TemplateCard.css";
+
+import Icon from "../ui/Icon.astro";
+
+import type {
+  CatalogLang,
+  TemplateConcept
+} from "../../data/templateCatalog";
+
+interface Props {
+  item: TemplateConcept;
+  index: number;
+  lang?: CatalogLang;
+  mode?: "home" | "catalog";
+}
+
+const {
+  item,
+  index,
+  lang = "uk",
+  mode = "home"
+} = Astro.props;
+
+const inCatalog = mode === "catalog";
+
+const href = inCatalog
+  ? "/#contacts"
+  : `/demo/${item.id}/`;
+
+const label = inCatalog
+  ? lang === "uk"
+    ? "Обговорити концепт"
+    : "Discuss this concept"
+  : lang === "uk"
+    ? "Відкрити живе демо"
+    : "Open live demo";
+
+const conceptLabel = lang === "uk"
+  ? "Дизайн-концепт"
+  : "Design concept";
+---
+
+<article
+  id={inCatalog ? item.id : undefined}
+  class={`nvt-card nvt-card--${item.category}`}
+  data-template-card
+  data-category={item.category}
+>
+  <div class="nvt-card__media">
+    <img
+      class="nvt-card__image"
+      src={item.image}
+      alt={item.imageAlt[lang]}
+      width="576"
+      height="378"
+      loading="lazy"
+      decoding="async"
+    />
+
+    <span class="nvt-card__number" aria-hidden="true">
+      {String(index).padStart(2, "0")}
+    </span>
+
+    <span class="nvt-card__status">
+      <span class="nvt-card__status-dot" aria-hidden="true"></span>
+      {conceptLabel}
+    </span>
+  </div>
+
+  <div class="nvt-card__body">
+    <span class="nvt-card__category">
+      {item.categoryLabel[lang]}
+    </span>
+
+    <h3 class="nvt-card__title">
+      {item.title[lang]}
+    </h3>
+
+    <p class="nvt-card__description">
+      {item.description[lang]}
+    </p>
+
+    <div class="nvt-card__footer">
+      <span class="nvt-card__highlight">
+        <span aria-hidden="true">✓</span>
+        {item.highlight[lang]}
+      </span>
+
+      <a
+        class="nvt-card__action"
+        href={href}
+        aria-label={`${label}: ${item.title[lang]}`}
+      >
+        <Icon name="arrow-up-right" size={19} />
+      </a>
+    </div>
+  </div>
+</article>

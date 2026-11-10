@@ -1,0 +1,382 @@
+---
+import "./Pricing.css";
+import Icon from "../ui/Icon.astro";
+import { getLangFromUrl, localizedPath } from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const format = new Intl.NumberFormat(lang === "uk" ? "uk-UA" : "en-US");
+const money = (value: number) => `${format.format(value)} ₴`;
+
+// Стартовий прайс Noryvio. Ціни всіх пакетів змінюються тільки тут.
+// Аванс + 12 платежів = повна вартість розробки.
+const plans = [
+  {
+    id: "landing",
+    icon: "rocket" as const,
+    name: { uk: "Landing Page", en: "Landing Page" },
+    subtitle: { uk: "Односторінковий сайт", en: "One-page website" },
+    deposit: 1990,
+    monthly: 490,
+    support: 299,
+    features: {
+      uk: ["До 7 основних секцій", "Адаптивність і базове SEO", "Форма заявки та запуск"],
+      en: ["Up to 7 main sections", "Responsive layout and basic SEO", "Lead form and launch"]
+    }
+  },
+  {
+    id: "business",
+    icon: "layers" as const,
+    name: { uk: "Business Website", en: "Business Website" },
+    subtitle: { uk: "Багатосторінковий сайт", en: "Multi-page website" },
+    deposit: 3990,
+    monthly: 890,
+    support: 499,
+    features: {
+      uk: ["До 6 типових сторінок", "Адаптивність, форми та SEO", "Базова вебаналітика"],
+      en: ["Up to 6 standard pages", "Responsive layout, forms and SEO", "Basic web analytics"]
+    }
+  },
+  {
+    id: "commerce",
+    icon: "monitor" as const,
+    name: { uk: "E-commerce", en: "E-commerce" },
+    subtitle: { uk: "Невеликий інтернет-магазин", en: "Small online store" },
+    deposit: 6990,
+    monthly: 1490,
+    support: 999,
+    features: {
+      uk: ["Каталог, кошик і замовлення", "Стандартні інтеграції", "Обсяг робіт уточнюємо окремо"],
+      en: ["Catalog, cart and orders", "Standard integrations", "Scope agreed individually"]
+    }
+  }
+] as const;
+
+const t = {
+  uk: {
+    eyebrow: "03 / ТАРИФИ NORYVIO",
+    title: "Сайт під ключ.",
+    accent: "Платіть частинами.",
+    description: "Не потрібно оплачувати всю розробку одразу. Внесіть аванс, а решту вартості розподіліть на 12 місячних платежів після запуску.",
+    offer: "Домен до 800 ₴, SSL і хостинг на перший рік включені",
+    deposit: "Початковий внесок",
+    monthly: "Щомісяця × 12",
+    full: "Повна ціна розробки",
+    support: "Супровід після року",
+    choose: "Розрахувати цей сайт",
+    selected: "Обрано",
+    included: "Входить у базовий пакет",
+    commerceNotice: "Функціональність магазину й вартість підтверджуємо перед замовленням.",
+    calcEyebrow: "ІНТЕРАКТИВНИЙ КАЛЬКУЛЯТОР",
+    calcTitle: "Скільки це коштуватиме?",
+    calcDesc: "Оберіть тип сайту та період після запуску. Місяць 0 — сплачено лише початковий внесок.",
+    website: "Обраний тип сайту",
+    duration: "Місяців після запуску",
+    start: "Аванс",
+    year: "12 міс.",
+    twoYears: "24 міс.",
+    current: "Платіж в обраному місяці",
+    rangeHelp: "Використовуйте повзунок або клавіші зі стрілками.",
+    currentZero: "Аванс на старті",
+    currentRegular: "Місячний платіж за розробку",
+    currentSupport: "Опційний місячний супровід",
+    summary: "ЗАГАЛОМ ЗА ОБРАНИЙ ПЕРІОД",
+    totalAtZero: "Аванс сплачено · до першого платежу",
+    totalFor: "За",
+    months: "місяців після запуску",
+    depositPart: "Початковий внесок",
+    installmentsPart: "Платежі за розробку",
+    supportPart: "Супровід після року",
+    supportToggle: "Враховувати супровід після завершення виплат",
+    remains: "Залишок платежів за розробку",
+    order: "Обговорити замовлення",
+    note: "Наведені ціни діють для базового обсягу робіт. До вартості входять базовий хостинг, SSL і домен на перший рік у межах 800 ₴. Продовження домену, платні сервіси, додатковий функціонал та зміни поза погодженим обсягом оплачуються окремо. Після 12 платежів технічний супровід — за бажанням; цілодобове чергування спеціаліста не включено. Остаточні умови та строки фіксуємо перед замовленням."
+  },
+  en: {
+    eyebrow: "03 / NORYVIO PRICING",
+    title: "Your website, ready to launch.",
+    accent: "Pay in instalments.",
+    description: "There is no need to pay the entire development cost upfront. Start with a deposit, then spread the rest across 12 monthly payments after launch.",
+    offer: "First-year hosting, SSL and a domain up to 800 UAH included",
+    deposit: "Initial deposit",
+    monthly: "Monthly × 12",
+    full: "Full development price",
+    support: "Support after year one",
+    choose: "Calculate this website",
+    selected: "Selected",
+    included: "Included in the base package",
+    commerceNotice: "Store functionality and price are confirmed before ordering.",
+    calcEyebrow: "INTERACTIVE CALCULATOR",
+    calcTitle: "What will it cost?",
+    calcDesc: "Choose a website type and the period after launch. Month 0 means only the initial deposit has been paid.",
+    website: "Selected website type",
+    duration: "Months after launch",
+    start: "Deposit",
+    year: "12 mo.",
+    twoYears: "24 mo.",
+    current: "Payment in selected month",
+    rangeHelp: "Use the slider or your keyboard arrow keys.",
+    currentZero: "Deposit at project start",
+    currentRegular: "Monthly development instalment",
+    currentSupport: "Optional monthly support",
+    summary: "TOTAL OVER THE SELECTED PERIOD",
+    totalAtZero: "Deposit paid · before first instalment",
+    totalFor: "For",
+    months: "months after launch",
+    depositPart: "Initial deposit",
+    installmentsPart: "Development instalments",
+    supportPart: "Support after year one",
+    supportToggle: "Include support after development is paid off",
+    remains: "Remaining development instalments",
+    order: "Discuss a project",
+    note: "Prices cover the base scope. Basic hosting, SSL and first-year domain registration up to 800 UAH are included. Domain renewals, paid services and work outside the agreed scope cost extra. After 12 instalments, technical support is optional; round-the-clock developer availability is not included. Final scope, price and delivery terms are confirmed before ordering."
+  }
+}[lang];
+
+const defaultPlan = plans[0];
+const defaultTotal = defaultPlan.deposit + 12 * defaultPlan.monthly;
+const contactUrl = localizedPath("/#contacts", lang);
+---
+
+<section id="pricing" class="np3-section" data-np3-pricing data-lang={lang} aria-labelledby="np3-title">
+  <div class="np3-ambient" aria-hidden="true"></div>
+
+  <div class="np3-container">
+    <header class="np3-heading" data-np3-reveal>
+      <div class="np3-eyebrow"><span aria-hidden="true"></span>{t.eyebrow}</div>
+      <div class="np3-heading__row">
+        <h2 id="np3-title">{t.title}<span>{t.accent}</span></h2>
+        <p>{t.description}</p>
+      </div>
+    </header>
+
+    <p class="np3-offer-note" data-np3-reveal>
+      <Icon name="check" size={17} />
+      {t.offer}
+    </p>
+
+    <div class="np3-plans" role="group" aria-label={lang === "uk" ? "Типи сайтів" : "Website types"}>
+      {plans.map((plan, index) => (
+        <div class="np3-plan-slot" data-np3-reveal data-np3-delay={index * 90}>
+          <article class:list={["np3-plan", { "np3-plan--business": plan.id === "business" }]}>
+            <div class="np3-plan__top">
+              <span class="np3-plan__number">/0{index + 1}</span>
+              <span class="np3-plan__type">{plan.subtitle[lang]}</span>
+            </div>
+
+            <div class="np3-plan__icon" aria-hidden="true">
+              <Icon name={plan.icon} size={25} />
+            </div>
+
+            <h3>{plan.name[lang]}</h3>
+            <p class="np3-plan__monthly">
+              <strong>{money(plan.monthly)}</strong>
+              <span>/ {lang === "uk" ? "міс. × 12" : "mo. × 12"}</span>
+            </p>
+
+            <div class="np3-plan__details">
+              <div><span>{t.deposit}</span><strong>{money(plan.deposit)}</strong></div>
+              <div><span>{t.full}</span><strong>{money(plan.deposit + plan.monthly * 12)}</strong></div>
+              <div><span>{t.support}</span><strong>{money(plan.support)} / {lang === "uk" ? "міс." : "mo."}</strong></div>
+            </div>
+
+            <p class="np3-plan__included">{t.included}</p>
+            <ul class="np3-plan__features">
+              {plan.features[lang].map((feature) => (
+                <li><Icon name="check" size={16} /><span>{feature}</span></li>
+              ))}
+            </ul>
+
+            {plan.id === "commerce" && <p class="np3-plan__fineprint">{t.commerceNotice}</p>}
+
+            <button
+              type="button"
+              class="np3-plan__choose"
+              data-np3-select={plan.id}
+              data-deposit={plan.deposit}
+              data-monthly={plan.monthly}
+              data-support={plan.support}
+              data-name={plan.name[lang]}
+              aria-pressed={index === 0 ? "true" : "false"}
+            >
+              <span class="np3-plan__choose-label">{index === 0 ? t.selected : t.choose}</span>
+              <Icon name="arrow-up-right" size={17} />
+            </button>
+          </article>
+        </div>
+      ))}
+    </div>
+
+    <div class="np3-calculator" data-np3-reveal>
+      <div class="np3-calculator__inputs">
+        <div class="np3-calc-eyebrow"><span aria-hidden="true"></span>{t.calcEyebrow}</div>
+        <h3>{t.calcTitle}</h3>
+        <p class="np3-calculator__description">{t.calcDesc}</p>
+
+        <div class="np3-selected-plan">
+          <span>{t.website}</span>
+          <strong id="np3-selected-name">{defaultPlan.name[lang]}</strong>
+        </div>
+
+        <div class="np3-range-heading">
+          <label for="np3-months">{t.duration}</label>
+          <output id="np3-month-label" for="np3-months">12 / 24</output>
+        </div>
+        <input
+          id="np3-months"
+          class="np3-range"
+          type="range"
+          min="0"
+          max="24"
+          step="1"
+          value="12"
+          aria-describedby="np3-range-help"
+        />
+        <div class="np3-range-markers" aria-hidden="true">
+          <span>{t.start}</span>
+          <span>{t.year}</span>
+          <span>{t.twoYears}</span>
+        </div>
+        <p class="np3-range-help" id="np3-range-help">{t.rangeHelp}</p>
+
+        <label class="np3-support-option">
+          <input id="np3-add-support" type="checkbox" checked />
+          <span>{t.supportToggle}</span>
+        </label>
+
+        <div class="np3-current">
+          <span id="np3-current-label">{t.currentRegular}</span>
+          <strong id="np3-current-value">{money(defaultPlan.monthly)}</strong>
+        </div>
+      </div>
+
+      <div class="np3-calculator__result">
+        <p class="np3-result-eyebrow">{t.summary}</p>
+        <div class="np3-total"><output id="np3-total" for="np3-months" aria-live="polite" aria-atomic="true">{format.format(defaultTotal)}</output><span>₴</span></div>
+        <p id="np3-period" class="np3-period">{t.totalFor} 12 {t.months}</p>
+
+        <div class="np3-breakdown">
+          <div><span>{t.depositPart}</span><strong id="np3-deposit">{money(defaultPlan.deposit)}</strong></div>
+          <div><span>{t.installmentsPart}</span><strong id="np3-installments">{money(defaultPlan.monthly * 12)}</strong></div>
+          <div><span>{t.supportPart}</span><strong id="np3-support">{money(0)}</strong></div>
+          <div class="np3-breakdown__remaining"><span>{t.remains}</span><strong id="np3-remaining">{money(0)}</strong></div>
+        </div>
+
+        <a class="np3-cta" href={contactUrl}>
+          <span>{t.order}</span>
+          <Icon name="arrow-up-right" size={19} />
+        </a>
+      </div>
+    </div>
+
+    <p class="np3-disclaimer" data-np3-reveal>{t.note}</p>
+  </div>
+</section>
+
+<script>
+  import { registerReveals } from "../../scripts/reveal";
+
+  const root = document.querySelector<HTMLElement>("[data-np3-pricing]");
+
+  if (root) {
+    const isUk = root.dataset.lang !== "en";
+    const currency = new Intl.NumberFormat(isUk ? "uk-UA" : "en-US");
+    const money = (amount: number) => `${currency.format(amount)} ₴`;
+    const get = (id: string) => root.querySelector<HTMLElement>(`#${id}`);
+    const range = root.querySelector<HTMLInputElement>("#np3-months");
+    const supportCheckbox = root.querySelector<HTMLInputElement>("#np3-add-support");
+    const buttons = [...root.querySelectorAll<HTMLButtonElement>("[data-np3-select]")];
+    let active = buttons[0];
+
+    const labels = isUk
+      ? {
+          selected: "Обрано",
+          choose: "Розрахувати цей сайт",
+          zero: "Аванс на старті",
+          regular: "Місячний платіж за розробку",
+          support: "Опційний місячний супровід",
+          noSupport: "Супровід не обрано",
+          zeroPeriod: "Аванс сплачено · до першого платежу",
+          for: "За",
+          month: "місяць після запуску",
+          months2: "місяці після запуску",
+          months: "місяців після запуску"
+        }
+      : {
+          selected: "Selected",
+          choose: "Calculate this website",
+          zero: "Deposit at project start",
+          regular: "Monthly development instalment",
+          support: "Optional monthly support",
+          noSupport: "Support not selected",
+          zeroPeriod: "Deposit paid · before first instalment",
+          for: "For",
+          month: "month after launch",
+          months2: "months after launch",
+          months: "months after launch"
+        };
+
+    const set = (id: string, value: string) => {
+      const el = get(id);
+      if (el) el.textContent = value;
+    };
+
+    function update() {
+      if (!range || !active) return;
+
+      const months = Math.max(0, Math.min(24, Number(range.value) || 0));
+      const deposit = Number(active.dataset.deposit);
+      const monthly = Number(active.dataset.monthly);
+      const support = Number(active.dataset.support);
+      const developmentMonths = Math.min(months, 12);
+      const supportMonths = Math.max(months - 12, 0);
+      const developmentSum = developmentMonths * monthly;
+      const includeSupport = supportCheckbox?.checked ?? false;
+      const supportSum = includeSupport ? supportMonths * support : 0;
+      const total = deposit + developmentSum + supportSum;
+      const remaining = (12 - developmentMonths) * monthly;
+
+      const current = months === 0 ? deposit : months <= 12 ? monthly : includeSupport ? support : 0;
+      const currentLabel = months === 0 ? labels.zero : months <= 12 ? labels.regular : includeSupport ? labels.support : labels.noSupport;
+      const ukUnit = months % 100 >= 11 && months % 100 <= 14
+        ? labels.months
+        : months % 10 === 1
+          ? labels.month
+          : months % 10 >= 2 && months % 10 <= 4
+            ? labels.months2
+            : labels.months;
+      const monthUnit = isUk ? ukUnit : months === 1 ? labels.month : labels.months;
+
+      set("np3-selected-name", active.dataset.name || "");
+      set("np3-month-label", `${months} / 24`);
+      set("np3-current-label", currentLabel);
+      set("np3-current-value", money(current));
+      set("np3-total", currency.format(total));
+      set("np3-period", months === 0 ? labels.zeroPeriod : `${labels.for} ${months} ${monthUnit}`);
+      set("np3-deposit", money(deposit));
+      set("np3-installments", money(developmentSum));
+      set("np3-support", money(supportSum));
+      set("np3-remaining", money(remaining));
+      range.style.setProperty("--np3-progress", `${months / 24 * 100}%`);
+    }
+
+    for (const button of buttons) {
+      button.addEventListener("click", () => {
+        active = button;
+        for (const b of buttons) {
+          const selected = b === button;
+          b.setAttribute("aria-pressed", String(selected));
+          const label = b.querySelector<HTMLElement>(".np3-plan__choose-label");
+          if (label) label.textContent = selected ? labels.selected : labels.choose;
+        }
+        update();
+      });
+    }
+
+    range?.addEventListener("input", update);
+    supportCheckbox?.addEventListener("change", update);
+    update();
+
+    // Shared scroll reveal scheduler; calculator event listeners remain unchanged.
+    registerReveals(root, "[data-np3-reveal]", "data-np3-delay", 680);
+  }
+</script>

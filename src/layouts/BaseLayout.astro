@@ -1,0 +1,273 @@
+
+---
+/**
+ * NORYVIO 2.0
+ * Global page layout
+ */
+
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+
+import { getLangFromUrl } from "../i18n/utils";
+
+import "@fontsource-variable/manrope";
+
+import "../styles/tokens.css";
+import "../styles/global.css";
+import "../styles/v2/tokens.css";
+
+interface Props {
+  title: string;
+  description: string;
+
+  noindex?: boolean;
+  ogImage?: string;
+
+  alternatePaths?: {
+    uk: string;
+    en: string;
+  };
+}
+
+const {
+  title,
+  description,
+  noindex = false,
+  ogImage,
+  alternatePaths
+} = Astro.props;
+
+/**
+ * Language detection.
+ *
+ * /          -> uk
+ * /en/       -> en
+ * /templates -> uk
+ * /en/blog/  -> en
+ */
+// All regular pages are excluded from indexing until the owner explicitly
+// approves public launch AND provides the real domain at build time.
+const searchIndexReady =
+  process.env.NORYVIO_LIVE === "true" && Boolean(Astro.site);
+const shouldNoindex = noindex || !searchIndexReady;
+
+const lang = getLangFromUrl(Astro.url);
+
+const isUkrainian = lang === "uk";
+
+const ogLocale = isUkrainian
+  ? "uk_UA"
+  : "en_US";
+
+const skipLinkText = isUkrainian
+  ? "Перейти до основного вмісту"
+  : "Skip to main content";
+
+/**
+ * Canonical URL.
+ *
+ * Generated only when the final site URL
+ * is configured in astro.config.mjs.
+ */
+const canonicalUrl = Astro.site
+  ? new URL(Astro.url.pathname, Astro.site).href
+  : undefined;
+
+/**
+ * Social preview image.
+ *
+ * Add ogImage to a page only when
+ * the actual image file exists.
+ */
+const ogImageUrl =
+  Astro.site && ogImage
+    ? new URL(ogImage, Astro.site).href
+    : undefined;
+
+/**
+ * Language alternatives.
+ *
+ * Output only when both translated
+ * pages actually exist.
+ */
+const alternateUrls =
+  Astro.site && alternatePaths?.uk && alternatePaths?.en
+    ? {
+        uk: new URL(
+          alternatePaths.uk,
+          Astro.site
+        ).href,
+
+        en: new URL(
+          alternatePaths.en,
+          Astro.site
+        ).href
+      }
+    : undefined;
+---
+
+<!doctype html>
+
+<html lang={lang}>
+  <head>
+    <!-- Basic metadata -->
+    <meta charset="UTF-8" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+
+    <meta
+      name="theme-color"
+      content="#070d12"
+    />
+
+    <!-- SEO -->
+    <title>{title}</title>
+
+    <meta
+      name="description"
+      content={description}
+    />
+
+    {shouldNoindex && (
+      <meta
+        name="robots"
+        content="noindex, nofollow"
+      />
+    )}
+
+    {canonicalUrl && (
+      <link
+        rel="canonical"
+        href={canonicalUrl}
+      />
+    )}
+
+    <!-- Language alternatives -->
+    {alternateUrls && (
+      <>
+        <link
+          rel="alternate"
+          hreflang="uk"
+          href={alternateUrls.uk}
+        />
+
+        <link
+          rel="alternate"
+          hreflang="en"
+          href={alternateUrls.en}
+        />
+
+        <link
+          rel="alternate"
+          hreflang="x-default"
+          href={alternateUrls.uk}
+        />
+      </>
+    )}
+
+    <!-- Open Graph -->
+    <meta
+      property="og:type"
+      content="website"
+    />
+
+    <meta
+      property="og:site_name"
+      content="Noryvio"
+    />
+
+    <meta
+      property="og:title"
+      content={title}
+    />
+
+    <meta
+      property="og:description"
+      content={description}
+    />
+
+    <meta
+      property="og:locale"
+      content={ogLocale}
+    />
+
+    {canonicalUrl && (
+      <meta
+        property="og:url"
+        content={canonicalUrl}
+      />
+    )}
+
+    {ogImageUrl && (
+      <meta
+        property="og:image"
+        content={ogImageUrl}
+      />
+    )}
+
+    <!-- Social sharing -->
+    <meta
+      name="twitter:card"
+      content={
+        ogImageUrl
+          ? "summary_large_image"
+          : "summary"
+      }
+    />
+
+    <!-- Additional metadata for individual pages -->
+    <slot name="head" />
+  </head>
+
+  <body>
+    <!-- Keyboard navigation -->
+    <a
+      class="nv-skip-link"
+      href="#main-content"
+    >
+      {skipLinkText}
+    </a>
+
+    <!-- Global header -->
+    <Header />
+
+    <!-- Main page content -->
+    <main id="main-content">
+      <slot />
+    </main>
+
+    <!-- Global footer -->
+    <Footer />
+  </body>
+</html>
+
+<style>
+  .nv-skip-link {
+    position: fixed;
+    top: 12px;
+    left: 12px;
+    z-index: 9999;
+
+    padding: 12px 18px;
+
+    border: 2px solid #24e5c1;
+    border-radius: 12px;
+
+    background: #101b22;
+    color: #f5f8fa;
+
+    font-size: 14px;
+    font-weight: 700;
+    text-decoration: none;
+
+    transform: translateY(-160%);
+  }
+
+  .nv-skip-link:focus-visible {
+    transform: translateY(0);
+    outline: none;
+  }
+</style>

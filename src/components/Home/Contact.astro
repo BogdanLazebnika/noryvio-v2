@@ -1,0 +1,569 @@
+---
+import "./Contact.css";
+import Icon from "../ui/Icon.astro";
+
+const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT || "";
+const turnstileSitekey =
+  import.meta.env.PUBLIC_TURNSTILE_SITEKEY || "";
+
+const isConfigured = Boolean(endpoint && turnstileSitekey);
+
+// The values below are also used by the existing Cloudflare Worker.
+// Keep these values unchanged when editing the visible labels.
+const websiteTypes = [
+  { value: "landing", label: "Landing Page" },
+  { value: "business", label: "Бізнес-сайт" },
+  { value: "commerce", label: "Інтернет-магазин" },
+  { value: "unsure", label: "Потрібна консультація" }
+];
+
+const contactMethods = [
+  { value: "phone", label: "Телефонний дзвінок" },
+  { value: "telegram", label: "Telegram" },
+  { value: "viber", label: "Viber" },
+  { value: "email", label: "Email" }
+];
+
+const advantages = [
+  {
+    icon: "check" as const,
+    title: "Спочатку — знайомство",
+    text: "Обговоримо ваші цілі без зобов'язань."
+  },
+  {
+    icon: "layers" as const,
+    title: "Зрозумілий план",
+    text: "До старту погодимо обсяг робіт і платежі."
+  },
+  {
+    icon: "shield" as const,
+    title: "Запуск під ключ",
+    text: "Допоможемо з доменом, SSL та розміщенням."
+  }
+];
+---
+
+<section
+  id="contacts"
+  class="contact-section nc2-section"
+  aria-labelledby="contact-title"
+  data-nc2-contact
+>
+  <div class="nc2-ambient" aria-hidden="true"></div>
+
+  <div class="nc2-container">
+    <div class="nc2-layout">
+      <!-- INTRO / LEFT COLUMN -->
+      <div class="nc2-intro">
+        <div data-nc2-reveal>
+          <p class="nc2-eyebrow">
+            <span class="nc2-eyebrow__dot" aria-hidden="true"></span>
+            06 / ПОЧНІМО СПІВПРАЦЮ
+          </p>
+
+          <h2 id="contact-title">
+            Є ідея?
+            <span>Створімо сайт.</span>
+          </h2>
+
+          <p class="nc2-lead">
+            Розкажіть про свій бізнес і завдання майбутнього сайту.
+            Ми допоможемо визначитися з рішенням, обговоримо
+            бюджет і погодимо наступні кроки.
+          </p>
+        </div>
+
+        <div class="nc2-benefits" data-nc2-reveal data-nc2-delay="85">
+          {advantages.map((advantage) => (
+            <div class="nc2-benefit">
+              <span class="nc2-benefit__icon" aria-hidden="true">
+                <Icon name={advantage.icon} size={20} />
+              </span>
+              <div>
+                <strong>{advantage.title}</strong>
+                <p>{advantage.text}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div class="nc2-orbit" aria-hidden="true">
+          <span class="nc2-orbit__outer"></span>
+          <span class="nc2-orbit__inner"></span>
+          <span class="nc2-orbit__center">
+            <span class="nc2-orbit__letter">N</span>
+          </span>
+          <span class="nc2-orbit__glow"></span>
+        </div>
+
+        <div class="nc2-included" data-nc2-reveal>
+          <div class="nc2-included__icon" aria-hidden="true">
+            <Icon name="globe" size={24} />
+          </div>
+          <div>
+            <strong>Перший рік — продуманий до деталей</strong>
+            <p>
+              Хостинг, SSL і домен у межах 800 ₴ включені
+              у базову пропозицію. Усі умови погодимо перед замовленням.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <!-- FORM / RIGHT COLUMN -->
+      <div class="nc2-form-panel" data-nc2-reveal data-nc2-delay="120">
+        <div class="nc2-panel-topline" aria-hidden="true">
+          <span></span><span></span><span></span>
+          <div class="nc2-panel-topline__rule"></div>
+          <span class="nc2-panel-topline__caption">NORYVIO / CONTACT</span>
+        </div>
+
+        <div class="nc2-panel-heading">
+          <p class="nc2-panel-kicker">
+            <span class="nc2-live-dot" aria-hidden="true"></span>
+            ОБГОВОРИТИ ПРОЄКТ
+          </p>
+          <h3>Розкажіть про вашу ідею</h3>
+          <p>
+            Заповніть коротку форму. Поля, позначені
+            зірочкою (*), обов'язкові.
+          </p>
+        </div>
+
+        <form
+          id="noryvio-contact-form"
+          class="nc2-form"
+          action={endpoint || undefined}
+          method="POST"
+          data-endpoint={endpoint}
+          aria-busy="false"
+        >
+          <!-- Keep the honeypot input name and attributes unchanged. -->
+          <div class="contact-honeypot" aria-hidden="true">
+            <label for="contact-company-extra">
+              Не заповнюйте це поле
+            </label>
+            <input
+              id="contact-company-extra"
+              type="text"
+              name="_gotcha"
+              tabindex="-1"
+              autocomplete="off"
+            />
+          </div>
+
+          <div class="nc2-field-heading">
+            <span class="nc2-field-heading__number">01</span>
+            <span>Ваші контакти</span>
+            <span class="nc2-field-heading__line" aria-hidden="true"></span>
+          </div>
+
+          <div class="nc2-fields">
+            <div class="nc2-field">
+              <label for="contact-name">Ваше ім'я *</label>
+              <input
+                id="contact-name"
+                type="text"
+                name="name"
+                placeholder="Як до вас звертатися?"
+                autocomplete="name"
+                minlength="2"
+                maxlength="80"
+                required
+              />
+            </div>
+
+            <div class="nc2-field">
+              <label for="contact-phone">Номер телефону *</label>
+              <input
+                id="contact-phone"
+                type="tel"
+                name="phone"
+                placeholder="+380 67 123 45 67"
+                autocomplete="tel"
+                inputmode="tel"
+                minlength="9"
+                maxlength="25"
+                required
+              />
+            </div>
+
+            <div class="nc2-field">
+              <label for="contact-email">
+                Email (необов'язково)
+              </label>
+              <input
+                id="contact-email"
+                type="email"
+                name="email"
+                placeholder="you@example.com"
+                autocomplete="email"
+                maxlength="160"
+              />
+            </div>
+
+            <div class="nc2-field">
+              <label for="contact-method">
+                Як зручно зв'язатися? *
+              </label>
+              <select
+                id="contact-method"
+                name="contact_method"
+                required
+              >
+                <option value="" disabled selected>
+                  Оберіть спосіб
+                </option>
+                {contactMethods.map((method) => (
+                  <option value={method.value}>
+                    {method.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div class="nc2-field nc2-field--full">
+              <label for="contact-telegram">
+                Telegram @username (необов'язково)
+              </label>
+              <input
+                id="contact-telegram"
+                type="text"
+                name="telegram_username"
+                placeholder="@username"
+                autocomplete="off"
+                maxlength="33"
+              />
+            </div>
+          </div>
+
+          <div class="nc2-field-heading nc2-field-heading--second">
+            <span class="nc2-field-heading__number">02</span>
+            <span>Про ваш сайт</span>
+            <span class="nc2-field-heading__line" aria-hidden="true"></span>
+          </div>
+
+          <div class="nc2-fields">
+            <div class="nc2-field nc2-field--full">
+              <label for="contact-type">
+                Який сайт вам потрібен? *
+              </label>
+              <select
+                id="contact-type"
+                name="website_type"
+                required
+              >
+                <option value="" disabled selected>
+                  Оберіть напрямок
+                </option>
+                {websiteTypes.map((type) => (
+                  <option value={type.value}>
+                    {type.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div class="nc2-field nc2-field--full">
+              <label for="contact-message">
+                Коротко про проєкт *
+              </label>
+              <textarea
+                id="contact-message"
+                name="message"
+                placeholder="Чим займається ваш бізнес? Які завдання має виконувати сайт?"
+                rows="5"
+                minlength="10"
+                maxlength="3000"
+                required
+              ></textarea>
+            </div>
+          </div>
+
+          <label class="nc2-consent contact-consent">
+            <input
+              type="checkbox"
+              name="consent"
+              value="yes"
+              required
+            />
+            <span>
+              Погоджуюся на обробку наданих контактних даних
+              для відповіді на моє звернення відповідно до
+              <a href="/privacy/" target="_blank" rel="noopener noreferrer">Політики конфіденційності</a>. *
+            </span>
+          </label>
+
+          <!-- Cloudflare Turnstile: site key, class, name, and token unchanged. -->
+          {turnstileSitekey && (
+            <div class="nc2-turnstile contact-turnstile">
+              <div
+                class="cf-turnstile"
+                data-sitekey={turnstileSitekey}
+                data-theme="dark"
+                data-size="flexible"
+              ></div>
+            </div>
+          )}
+
+          <button
+            class="nc2-submit contact-submit"
+            type="submit"
+            disabled={!isConfigured}
+          >
+            <span class="contact-submit-text">
+              Надіслати заявку
+            </span>
+            <span
+              class="contact-submit-arrow nc2-submit__arrow"
+              aria-hidden="true"
+            >
+              <Icon name="arrow-up-right" size={20} />
+            </span>
+            <span
+              class="contact-spinner"
+              aria-hidden="true"
+            ></span>
+          </button>
+
+          <p
+            id="contact-form-status"
+            class="contact-status nc2-status"
+            role="status"
+            aria-live="polite"
+            aria-atomic="true"
+          >
+            {!isConfigured
+              ? "Форма ще не налаштована. Перевірте підключення."
+              : ""}
+          </p>
+        </form>
+
+        <div class="nc2-panel-footer">
+          <Icon name="shield" size={16} />
+          <span>Контактні дані використовуємо лише для відповіді на звернення.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{turnstileSitekey && (
+  <script
+    is:inline
+    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+    async
+    defer
+  ></script>
+)}
+
+<script>
+  type TurnstileApi = {
+    reset: () => void;
+  };
+
+  const form = document.querySelector<HTMLFormElement>(
+    "#noryvio-contact-form"
+  );
+
+  if (form) {
+    const endpoint = form.dataset.endpoint || "";
+
+    const button = form.querySelector<HTMLButtonElement>(
+      ".contact-submit"
+    );
+
+    const buttonText = form.querySelector<HTMLElement>(
+      ".contact-submit-text"
+    );
+
+    const status = form.querySelector<HTMLElement>(
+      "#contact-form-status"
+    );
+
+    const emailInput = form.querySelector<HTMLInputElement>(
+      "#contact-email"
+    );
+
+    const phoneInput = form.querySelector<HTMLInputElement>(
+      "#contact-phone"
+    );
+
+    const methodSelect = form.querySelector<HTMLSelectElement>(
+      "#contact-method"
+    );
+
+    const telegramInput = form.querySelector<HTMLInputElement>(
+      "#contact-telegram"
+    );
+
+    const turnstileWindow = window as Window & {
+      turnstile?: TurnstileApi;
+    };
+
+    let sending = false;
+
+    function showStatus(
+      message: string,
+      type: "success" | "error" | "normal" = "normal"
+    ) {
+      if (!status) return;
+
+      status.textContent = message;
+      status.className = "contact-status";
+
+      if (type !== "normal") {
+        status.classList.add(`is-${type}`);
+      }
+    }
+
+    function updateContactRequirements() {
+      if (!emailInput || !methodSelect) return;
+
+      const emailRequired = methodSelect.value === "email";
+
+      emailInput.required = emailRequired;
+
+      const label = form?.querySelector<HTMLLabelElement>(
+        'label[for="contact-email"]'
+      );
+
+      if (label) {
+        label.textContent = emailRequired
+          ? "Email *"
+          : "Email (необов'язково)";
+      }
+    }
+
+    methodSelect?.addEventListener(
+      "change",
+      updateContactRequirements
+    );
+
+    updateContactRequirements();
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+
+      if (!endpoint || sending) return;
+
+      // Перевірка телефону
+      const phone = phoneInput?.value.trim() || "";
+      const phoneValid = /^\+?[0-9\s()\-]{9,25}$/.test(phone);
+      const digitCount = phone.replace(/\D/g, "").length;
+
+      if (phoneInput) {
+        phoneInput.setCustomValidity(
+          phoneValid && digitCount >= 9 && digitCount <= 15
+            ? ""
+            : "Введіть коректний номер телефону."
+        );
+      }
+
+      // Перевірка Telegram username, якщо вказаний
+      const username = telegramInput?.value.trim() || "";
+
+      if (telegramInput) {
+        telegramInput.setCustomValidity(
+          !username || /^@?[a-zA-Z0-9_]{5,32}$/.test(username)
+            ? ""
+            : "Введіть коректний Telegram username."
+        );
+      }
+
+      if (!form.reportValidity()) return;
+
+      const formData = new FormData(form);
+      const token = formData.get("cf-turnstile-response");
+
+      if (typeof token !== "string" || !token.trim()) {
+        showStatus(
+          "Дочекайтеся завершення перевірки безпеки.",
+          "error"
+        );
+        return;
+      }
+
+      sending = true;
+      form.classList.add("is-sending");
+      form.setAttribute("aria-busy", "true");
+
+      if (button) button.disabled = true;
+      if (buttonText) {
+        buttonText.textContent = "Надсилаємо...";
+      }
+
+      showStatus("");
+
+      try {
+        const response = await fetch(endpoint, {
+          method: "POST",
+          body: formData,
+          headers: {
+            Accept: "application/json"
+          }
+        });
+
+        const result: {
+          ok?: boolean;
+          error?: string;
+        } = await response.json();
+
+        if (!response.ok || result.ok !== true) {
+          throw new Error(result.error || "Request failed");
+        }
+
+        form.reset();
+        if (phoneInput) phoneInput.setCustomValidity("");
+        if (telegramInput) telegramInput.setCustomValidity("");
+
+        updateContactRequirements();
+
+        showStatus(
+          "Заявку успішно надіслано! Дякуємо за звернення.",
+          "success"
+        );
+      } catch (error) {
+        console.error("Noryvio contact error:", error);
+
+        showStatus(
+          "Не вдалося надіслати заявку. Спробуйте ще раз.",
+          "error"
+        );
+      } finally {
+        sending = false;
+
+        form.classList.remove("is-sending");
+        form.setAttribute("aria-busy", "false");
+
+        try {
+          turnstileWindow.turnstile?.reset();
+        } catch {
+          // Віджет може бути недоступний
+        }
+
+        if (button) button.disabled = false;
+        if (buttonText) {
+          buttonText.textContent = "Надіслати заявку";
+        }
+      }
+    });
+
+    // При зміні значень прибираємо старі помилки
+    phoneInput?.addEventListener("input", () => {
+      phoneInput.setCustomValidity("");
+    });
+
+    telegramInput?.addEventListener("input", () => {
+      telegramInput.setCustomValidity("");
+    });
+  }
+</script>
+
+
+<!-- Stable scroll reveals. Contact form submission logic above is untouched. -->
+<script>
+  import { registerReveals } from "../../scripts/reveal";
+  const section = document.querySelector<HTMLElement>("[data-nc2-contact]");
+  registerReveals(section, "[data-nc2-reveal]", "data-nc2-delay", 690);
+</script>

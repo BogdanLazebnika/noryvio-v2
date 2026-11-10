@@ -1,0 +1,74 @@
+
+/* ==========================================
+   NORYVIO 2.0 — DESIGN TOKENS
+   ========================================== */
+
+:root {
+  /* Backgrounds */
+  --nv2-bg: #070d12;
+  --nv2-bg-deep: #04090d;
+  --nv2-surface: #0d191d;
+  --nv2-surface-raised: #122329;
+
+  /* Typography */
+  --nv2-text: #f5f8fa;
+  --nv2-text-muted: #a4b3bd;
+  --nv2-text-subtle: #728992;
+
+  /* Brand */
+  --nv2-accent: #24e5c1;
+  --nv2-accent-bright: #66f5d9;
+  --nv2-accent-deep: #0b987e;
+  --nv2-accent-ink: #041713;
+
+  /* Borders */
+  --nv2-border: rgba(180, 255, 241, 0.13);
+  --nv2-border-strong: rgba(36, 229, 193, 0.48);
+
+  /* Glass */
+  --nv2-glass: rgba(9, 24, 28, 0.76);
+  --nv2-glass-soft: rgba(9, 24, 28, 0.48);
+
+  /* Gradients */
+  --nv2-gradient-accent: linear-gradient(
+    110deg,
+    #24e5c1 0%,
+    #0ff0d2 55%,
+    #69ffdc 100%
+  );
+
+  --nv2-gradient-card: linear-gradient(
+    145deg,
+    rgba(28, 70, 69, 0.34),
+    rgba(7, 16, 21, 0.94) 65%
+  );
+
+  /* Shadows and glow */
+  --nv2-shadow-card:
+    0 20px 70px rgba(0, 0, 0, 0.35);
+
+  --nv2-glow-soft:
+    0 0 40px rgba(36, 229, 193, 0.10);
+
+  --nv2-glow-active:
+    0 0 35px rgba(36, 229, 193, 0.22);
+
+  /* Layout */
+  --nv2-container: 1240px;
+  --nv2-gutter: clamp(20px, 4vw, 48px);
+
+  /* Radius */
+  --nv2-radius-sm: 12px;
+  --nv2-radius-md: 18px;
+  --nv2-radius-lg: 26px;
+  --nv2-radius-pill: 999px;
+
+  /* Typography */
+  --nv2-font: "Manrope Variable", "Manrope", sans-serif;
+
+  /* Motion */
+  --nv2-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --nv2-duration-fast: 180ms;
+  --nv2-duration-normal: 320ms;
+  --nv2-duration-slow: 650ms;
+}

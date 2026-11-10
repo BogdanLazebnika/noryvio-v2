@@ -1,0 +1,57 @@
+/* NORYVIO / LEGAL PAGES - drafts, styles isolated by nlegal- */
+.nlegal-page, .nlegal-page * { box-sizing: border-box; }
+.nlegal-page {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-height: 80vh;
+  padding: clamp(90px, 10vw, 145px) 0 clamp(80px, 8vw, 115px);
+  color: #eef8f8;
+  background: linear-gradient(180deg, #050d11 0%, #071619 48%, #050d11 100%);
+  scroll-margin-top: 90px;
+}
+.nlegal-ambient { position: absolute; z-index: -1; inset: 0; pointer-events: none;
+ background: radial-gradient(ellipse 42% 28% at 89% 5%, rgba(36,229,193,.13), transparent 90%),
+ radial-gradient(ellipse 38% 25% at -10% 72%, rgba(16,139,133,.10), transparent 90%); }
+.nlegal-container { width: min(calc(100% - 2 * var(--nv2-gutter, 24px)), var(--nv2-container, 1240px)); margin-inline: auto; }
+.nlegal-back { display: inline-flex; align-items: center; gap: 11px; color: #b2c8c8; text-decoration: none; font-size: 12px; font-weight: 700; margin-bottom: clamp(40px, 6vw, 75px); }
+.nlegal-back:hover, .nlegal-document a:hover { color: #24e5c1; }
+.nlegal-back span { font-size: 23px; line-height: 1; color: #24e5c1; }
+.nlegal-eyebrow { display: inline-flex; align-items: center; gap: 10px; margin: 0 0 20px; color: #24e5c1; font-size: 10px; font-weight: 800; letter-spacing: .15em; }
+.nlegal-eyebrow span { width: 7px; height: 7px; border-radius: 50%; background: #24e5c1; box-shadow: 0 0 16px rgba(36,229,193,.65); }
+.nlegal-hero { max-width: 950px; margin-bottom: clamp(50px, 6vw, 75px); }
+.nlegal-hero h1 { font-size: clamp(40px, 5.6vw, 74px); letter-spacing: -.055em; font-weight: 800; line-height: 1.1; text-wrap: balance; margin: 0 0 21px; }
+.nlegal-hero h1 span { display: block; color: #24e5c1; }
+.nlegal-hero > p:not(.nlegal-eyebrow) { max-width: 700px; margin: 0; color: #adc3c6; line-height: 1.9; font-size: clamp(14px, 1.5vw, 17px); }
+.nlegal-draft { max-width: 800px; display: grid; gap: 7px; margin-top: 30px; padding: 18px 21px; border: 1px solid rgba(239,188,104,.34); border-radius: 16px; background: rgba(232,157,75,.07); color: #dcc8ad; font-size: 12px; line-height: 1.7; }
+.nlegal-draft strong { color: #ffe0aa; font-size: 13px; }
+.nlegal-layout { display: grid; grid-template-columns: minmax(185px,.34fr) minmax(0,1fr); gap: clamp(32px,6vw,90px); align-items: start; }
+.nlegal-index { position: sticky; top: 112px; padding: 24px; border: 1px solid rgba(36,229,193,.16); border-radius: 20px; background: linear-gradient(145deg,#112329,#09171b); }
+.nlegal-index > p { margin: 0 0 20px; color: #24e5c1; font-size: 10px; letter-spacing: .12em; font-weight: 800; }
+.nlegal-index nav { display: grid; gap: 8px; }
+.nlegal-index nav a { display: flex; align-items: baseline; gap: 10px; border-radius: 8px; padding: 8px 6px; text-decoration: none; color: #bdcdd0; font-size: 12px; line-height: 1.6; transition: color .2s ease, background-color .2s ease; }
+.nlegal-index nav a:hover { color: #24e5c1; background: rgba(36,229,193,.045); }
+.nlegal-index nav a span { color: #729c96; flex: none; font-size: 10px; font-variant-numeric: tabular-nums; }
+.nlegal-document { min-width: 0; }
+.nlegal-block { scroll-margin-top: 122px; padding: 0 0 35px; margin: 0 0 37px; border-bottom: 1px solid rgba(181,236,223,.13); }
+.nlegal-block:last-child { margin-bottom: 0; border-bottom: 0; }
+.nlegal-block__number { display: block; margin: 0 0 15px; color: #60d8c1; font-size: 10px; letter-spacing: .13em; font-weight: 800; }
+.nlegal-block h2 { color: #f7ffff; margin: 0 0 19px; font-size: clamp(23px, 2.4vw, 31px); line-height: 1.25; letter-spacing: -.035em; }
+.nlegal-block p { max-width: 830px; margin: 0 0 15px; color: #acbec3; font-size: 14px; line-height: 1.95; overflow-wrap: anywhere; }
+.nlegal-block p:last-child { margin-bottom: 0; }
+.nlegal-block strong { color: #dff9f3; font-weight: 750; }
+.nlegal-document a { color: #24e5c1; text-underline-offset: 4px; }
+.nlegal-document a:focus-visible, .nlegal-back:focus-visible, .nlegal-index a:focus-visible { outline: 2px solid #24e5c1; outline-offset: 4px; }
+@media(max-width: 900px) {
+ .nlegal-layout { grid-template-columns: 1fr; gap: 45px; }
+ .nlegal-index { position: static; }
+ .nlegal-index nav { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media(max-width: 560px) {
+ .nlegal-page { padding-block: 75px; }
+ .nlegal-index nav { grid-template-columns: 1fr; }
+ .nlegal-index { padding: 18px; }
+ .nlegal-hero h1 { font-size: clamp(37px, 10vw, 52px); }
+ .nlegal-block p { font-size: 13px; }
+}
+@media(prefers-reduced-motion:reduce) { .nlegal-index nav a { transition: none; } }

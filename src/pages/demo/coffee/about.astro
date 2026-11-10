@@ -1,0 +1,11 @@
+---
+import CoffeeLayout from '../../../components/demos/coffee/CoffeeLayout.astro';
+import { photo } from '../../../data/coffeeMenu';
+---
+<CoffeeLayout title="Наша історія" active="/about/">
+<section class="coffee-page-hero" style={`--page-image:url('${photo.interior}')`}><div class="coffee-container"><span class="coffee-eyebrow">BREW & BLOOM / ПРО НАС</span><h1>Зроблено<br/><em>з любов’ю.</em></h1><p>Концепт про місце, де в буденності завжди є місце для маленького свята.</p></div></section>
+<section class="coffee-section coffee-section--cream"><div class="coffee-container coffee-about-intro"><div class="coffee-reveal"><span class="coffee-eyebrow">01 / ФІЛОСОФІЯ</span><h2>Почати день<br/><em>із правильного.</em></h2></div><div class="coffee-reveal"><p>Ми уявили Brew & Bloom як кав’ярню, в якій важлива не тільки чашка. Важлива музика, світло на столі, розмова, яку не хочеться завершувати.</p><p>Це демонстраційний бренд. У реальному проєкті тут могла б жити історія засновників, цінності команди й особливий характер вашого закладу.</p><a class="coffee-text-link" href="/demo/coffee/gallery/">Атмосфера у світлинах ↗</a></div></div></section>
+<section class="coffee-about-grid"><img src={photo.counter} alt="Барна стійка й затишне освітлення" loading="lazy"/><img src={photo.beans} alt="Обсмажені зерна кави" loading="lazy"/></section>
+<section class="coffee-section coffee-section--dark"><div class="coffee-container"><div class="coffee-section__head"><div><span class="coffee-eyebrow">02 / НАШІ ПРИНЦИПИ</span><h2>Деталі, які<br/><em>відчуваються.</em></h2></div></div><div class="coffee-values"><div class="coffee-reveal"><b>01</b><h3>Смак без компромісів</h3><p>Увага до зерна, води, помелу й способу приготування.</p></div><div class="coffee-reveal"><b>02</b><h3>Вільний ритм</h3><p>Місце й для швидкого еспресо, і для довгих розмов.</p></div><div class="coffee-reveal"><b>03</b><h3>Люди важливі</h3><p>Кава об’єднує, а справжня атмосфера починається із турботи.</p></div></div></div></section>
+<section class="coffee-final"><div class="coffee-container coffee-final__inner"><span class="coffee-eyebrow">ЗАХОДЬ У ГОСТІ</span><h2>Твій стіл<br/><em>уже чекає.</em></h2><p>Спробуй демонстраційне бронювання за кілька кліків.</p><a class="coffee-btn coffee-btn--gold" href="/demo/coffee/contacts/#booking">Обрати час ↗</a></div></section>
+</CoffeeLayout>

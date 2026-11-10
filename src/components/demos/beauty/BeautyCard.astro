@@ -1,0 +1,6 @@
+---
+import {beautyBase} from '../../../data/beauty';
+interface Props{item:{id:string;name:string;category:string;minutes:number;price:number;description:string;photo:string}}
+const {item}=Astro.props;
+---
+<article class="au-service-card au-reveal"><div class="au-service-image"><img src={item.photo} alt={`Концептуальне фото: ${item.name}`} loading="lazy"/><span>{item.category}</span></div><div class="au-service-info"><h3>{item.name}</h3><p>{item.description}</p><div class="au-service-foot"><span>{item.minutes} хв · від {item.price.toLocaleString('uk-UA')} ₴</span><a href={`${beautyBase}booking/?service=${item.id}`} aria-label={`Обрати ${item.name}`}>Обрати ↗</a></div></div></article>

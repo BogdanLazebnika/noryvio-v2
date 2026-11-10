@@ -1,0 +1,340 @@
+---
+import "./Process.css";
+import Icon from "../ui/Icon.astro";
+import { getLangFromUrl, localizedPath } from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+
+const content = {
+  uk: {
+    eyebrow: "04 / ПРОЦЕС СПІВПРАЦІ",
+    title: "Від першої ідеї",
+    accent: "до запуску сайту.",
+    description:
+      "Без складних схем і неочікуваних кроків. Ви знаєте, що відбувається з проєктом, за що сплачуєте та коли сайт буде готовий до публікації.",
+    marker: "ЧОТИРИ КРОКИ ДО РЕЗУЛЬТАТУ",
+    steps: [
+      {
+        number: "01",
+        icon: "monitor" as const,
+        label: "ЗНАЙОМСТВО",
+        title: "Обговорюємо вашу ідею",
+        description:
+          "Знайомимося з бізнесом, аудиторією та завданнями майбутнього сайту. Визначаємо потрібний формат.",
+        points: ["Заявка й консультація", "Цілі та функціональність"]
+      },
+      {
+        number: "02",
+        icon: "layers" as const,
+        label: "ПЛАН І АВАНС",
+        title: "Узгоджуємо умови",
+        description:
+          "Фіксуємо обсяг робіт, вартість і графік платежів. Після погодження умов та початкового внеску стартує розробка.",
+        points: ["Дизайн і структура", "Аванс + 12 платежів"]
+      },
+      {
+        number: "03",
+        icon: "bolt" as const,
+        label: "РОЗРОБКА",
+        title: "Створюємо сайт",
+        description:
+          "Адаптуємо дизайн під ваш бренд, наповнюємо сторінки, підключаємо погоджені функції та перевіряємо якість.",
+        points: ["Адаптивність і базове SEO", "Перевірка та погоджені правки"]
+      },
+      {
+        number: "04",
+        icon: "rocket" as const,
+        label: "ЗАПУСК",
+        title: "Виходимо онлайн",
+        description:
+          "Публікуємо готовий сайт, налаштовуємо домен, SSL і хостинг. Після 12 платежів супровід можна замовити окремо.",
+        points: ["Домен і хостинг на 1-й рік", "Підтримка за умовами пакета"]
+      }
+    ],
+    note:
+      "Терміни та обсяг правок визначаємо перед початком роботи. Домен на перший рік входить у пакет у межах 800 ₴.",
+    ctaEyebrow: "NORYVIO / НАСТУПНИЙ КРОК",
+    ctaTitle: "Готові обговорити свій сайт?",
+    ctaDescription:
+      "Залиште заявку. Спочатку розберемося із завданням, а потім запропонуємо рішення та зрозумілі умови.",
+    ctaPrimary: "Залишити заявку",
+    ctaSecondary: "Переглянути концепти",
+    timelineAria: "Чотири етапи створення сайту"
+  },
+  en: {
+    eyebrow: "04 / OUR PROCESS",
+    title: "From your first idea",
+    accent: "to a live website.",
+    description:
+      "No complicated process or unexpected steps. You know what's happening with your project, what you're paying for and how we get to launch.",
+    marker: "FOUR STEPS TO LAUNCH",
+    steps: [
+      {
+        number: "01",
+        icon: "monitor" as const,
+        label: "DISCOVERY",
+        title: "We discuss your idea",
+        description:
+          "We learn about your business, audience and goals, then determine the right kind of website.",
+        points: ["Enquiry and consultation", "Goals and features"]
+      },
+      {
+        number: "02",
+        icon: "layers" as const,
+        label: "PLAN & DEPOSIT",
+        title: "We agree on the terms",
+        description:
+          "We confirm the scope, price and payment schedule. Work starts once the terms and deposit are agreed.",
+        points: ["Design and structure", "Deposit + 12 payments"]
+      },
+      {
+        number: "03",
+        icon: "bolt" as const,
+        label: "DEVELOPMENT",
+        title: "We build your website",
+        description:
+          "We tailor the design, prepare pages, implement agreed features and check the result across devices.",
+        points: ["Responsive design and basic SEO", "Testing and agreed revisions"]
+      },
+      {
+        number: "04",
+        icon: "rocket" as const,
+        label: "LAUNCH",
+        title: "We go live",
+        description:
+          "We publish the site and configure the domain, SSL and hosting. Ongoing support is optional after the 12 payments.",
+        points: ["First-year domain and hosting", "Support under agreed terms"]
+      }
+    ],
+    note:
+      "Timelines and revisions are agreed before work begins. The first-year domain is included up to a value of 800 UAH.",
+    ctaEyebrow: "NORYVIO / YOUR NEXT STEP",
+    ctaTitle: "Ready to discuss your website?",
+    ctaDescription:
+      "Send an enquiry. We'll understand your goals first, then suggest a solution and clear terms.",
+    ctaPrimary: "Send an enquiry",
+    ctaSecondary: "Explore concepts",
+    timelineAria: "Four stages of website development"
+  }
+} as const;
+
+const t = content[lang];
+const contactUrl = localizedPath("/#contacts", lang);
+const templatesUrl = localizedPath("/templates/", lang);
+---
+
+<section
+  id="process"
+  class="npr2-section"
+  data-npr2-process
+  aria-labelledby="npr2-title"
+>
+  <div class="npr2-ambient" aria-hidden="true"></div>
+
+  <div class="npr2-container">
+    <header class="npr2-header" data-npr2-reveal>
+      <div class="npr2-header__main">
+        <p class="npr2-eyebrow">
+          <span class="npr2-eyebrow__dot" aria-hidden="true"></span>
+          {t.eyebrow}
+        </p>
+        <h2 id="npr2-title">
+          {t.title}
+          <span>{t.accent}</span>
+        </h2>
+      </div>
+      <div class="npr2-header__aside">
+        <p>{t.description}</p>
+        <span class="npr2-header__marker">
+          <Icon name="check" size={16} />
+          {t.marker}
+        </span>
+      </div>
+    </header>
+
+    <div class="npr2-roadmap" data-npr2-roadmap>
+      <!-- Desktop: connected horizontal timeline with a scroll-driven fill -->
+      <div class="npr2-track" aria-hidden="true">
+        <div class="npr2-track__rail">
+          <span class="npr2-track__fill"></span>
+        </div>
+        <div class="npr2-track__nodes">
+          {t.steps.map((step) => (
+            <span class="npr2-track__node" data-npr2-track-node>
+              <span>{step.number}</span>
+            </span>
+          ))}
+        </div>
+      </div>
+
+      <!-- Mobile: progress continues vertically beside the cards -->
+      <div class="npr2-mobile-rail" aria-hidden="true">
+        <span></span>
+      </div>
+
+      <div class="npr2-grid" aria-label={t.timelineAria}>
+        {t.steps.map((step, index) => (
+          <div
+            class="npr2-step-slot"
+            data-npr2-step
+            data-npr2-reveal
+            data-npr2-delay={index * 80}
+          >
+            <span class="npr2-mobile-node" aria-hidden="true">
+              {step.number}
+            </span>
+
+            <article class="npr2-card" data-npr2-card>
+              <div class="npr2-card__top">
+                <span class="npr2-card__tag">{step.label}</span>
+                <span class="npr2-card__icon" aria-hidden="true">
+                  <Icon name={step.icon} size={24} />
+                </span>
+              </div>
+
+              <h3>{step.title}</h3>
+              <p class="npr2-card__description">
+                {step.description}
+              </p>
+
+              <ul class="npr2-card__points">
+                {step.points.map((point) => (
+                  <li>
+                    <Icon name="check" size={16} />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </article>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <p class="npr2-note" data-npr2-reveal>{t.note}</p>
+
+    <div class="npr2-cta" data-npr2-reveal>
+      <div class="npr2-cta__symbol" aria-hidden="true">
+        <Icon name="rocket" size={26} />
+      </div>
+
+      <div class="npr2-cta__text">
+        <span class="npr2-cta__eyebrow">{t.ctaEyebrow}</span>
+        <h3>{t.ctaTitle}</h3>
+        <p>{t.ctaDescription}</p>
+      </div>
+
+      <div class="npr2-cta__actions">
+        <a class="npr2-cta__primary" href={contactUrl}>
+          {t.ctaPrimary}
+          <Icon name="arrow-up-right" size={18} />
+        </a>
+        <a class="npr2-cta__secondary" href={templatesUrl}>
+          {t.ctaSecondary}
+          <Icon name="arrow-right" size={17} />
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  import { registerReveals } from "../../scripts/reveal";
+
+  function initNoryvioProcess() {
+    const section = document.querySelector<HTMLElement>(
+      "[data-npr2-process]"
+    );
+    if (!section || section.dataset.npr2Ready === "true") return;
+    section.dataset.npr2Ready = "true";
+
+    const roadmap = section.querySelector<HTMLElement>(
+      "[data-npr2-roadmap]"
+    );
+    const steps = Array.from(
+      section.querySelectorAll<HTMLElement>("[data-npr2-step]")
+    );
+    const nodes = Array.from(
+      section.querySelectorAll<HTMLElement>("[data-npr2-track-node]")
+    );
+    if (!roadmap || !steps.length) return;
+
+    const reducedMotion = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+    const narrowScreen = window.matchMedia("(max-width: 740px)");
+
+    // The scroll indicator is visual only. All process details remain
+    // fully visible to users and search engines without JavaScript.
+    const clamp = (value: number) => Math.max(0, Math.min(1, value));
+    let visible = true;
+    let frame = 0;
+
+    const updateProgress = () => {
+      frame = 0;
+      const screenHeight = window.innerHeight;
+      let progress = 0;
+
+      if (narrowScreen.matches && steps.length > 1) {
+        const firstRect = steps[0].getBoundingClientRect();
+        const lastRect = steps[steps.length - 1].getBoundingClientRect();
+        const firstCenter = firstRect.top + 40;
+        const lastCenter = lastRect.top + 40;
+        const cursor = screenHeight * 0.54;
+        progress = clamp(
+          (cursor - firstCenter) / Math.max(lastCenter - firstCenter, 1)
+        );
+      } else {
+        const top = roadmap.getBoundingClientRect().top + 26;
+        const start = screenHeight * 0.82;
+        const finish = screenHeight * 0.34;
+        progress = clamp((start - top) / (start - finish));
+      }
+
+      roadmap.style.setProperty(
+        "--npr2-progress",
+        `${(progress * 100).toFixed(2)}%`
+      );
+
+      const currentStep = Math.min(
+        steps.length - 1,
+        Math.max(0, Math.round(progress * (steps.length - 1)))
+      );
+
+      steps.forEach((step, index) => {
+        const card = step.querySelector<HTMLElement>("[data-npr2-card]");
+        card?.classList.toggle("npr2-card--active", index === currentStep);
+        step.classList.toggle("npr2-step-slot--passed", index <= currentStep);
+        nodes[index]?.classList.toggle(
+          "npr2-track__node--active",
+          index <= currentStep
+        );
+      });
+    };
+
+    const requestUpdate = () => {
+      if (visible && !frame) frame = window.requestAnimationFrame(updateProgress);
+    };
+
+    if ("IntersectionObserver" in window) {
+      const regionObserver = new IntersectionObserver(
+        (entries) => {
+          visible = Boolean(entries[0]?.isIntersecting);
+          if (visible) requestUpdate();
+        },
+        { rootMargin: "250px 0px 250px 0px" }
+      );
+      regionObserver.observe(roadmap);
+    }
+
+    window.addEventListener("scroll", requestUpdate, { passive: true });
+    window.addEventListener("resize", requestUpdate, { passive: true });
+    updateProgress();
+
+    // Scroll reveals use stable full-exit thresholds; roadmap logic above is preserved.
+    registerReveals(section, "[data-npr2-reveal]", "data-npr2-delay", 690);
+  }
+
+  initNoryvioProcess();
+  document.addEventListener("astro:page-load", initNoryvioProcess);
+</script>

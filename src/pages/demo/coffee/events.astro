@@ -1,0 +1,9 @@
+---
+import CoffeeLayout from '../../../components/demos/coffee/CoffeeLayout.astro';
+import { photo } from '../../../data/coffeeMenu';
+const events=[{tag:'ДЕГУСТАЦІЯ',title:'Перший крок у specialty',desc:'Пробуємо три способи заварювання й шукаємо власний улюблений смак.',when:'Субота · 12:00',image:photo.beans},{tag:'АТМОСФЕРА',title:'Slow Sunday',desc:'Неспішний ранок, сезонна випічка й плейлист для гарного настрою.',when:'Неділя · 11:00',image:photo.croissant},{tag:'МАЙСТЕР-КЛАС',title:'Лате-арт без магії',desc:'Розбираємо молочну текстуру та робимо перші малюнки в чашці.',when:'Середа · 18:30',image:photo.latte},{tag:'СПІЛЬНОТА',title:'Книжковий вечір',desc:'Улюблені історії, кава та невимушені розмови за великим столом.',when:'П’ятниця · 19:00',image:photo.interior}];
+---
+<CoffeeLayout title="Події" active="/events/">
+<section class="coffee-page-hero" style={`--page-image:url('${photo.counter}')`}><div class="coffee-container"><span class="coffee-eyebrow">BREW & BLOOM / АФІША</span><h1>Привід<br/><em>зустрітися.</em></h1><p>Кава стає ще смачнішою, коли навколо цікаві люди. Усі події тут демонстраційні.</p></div></section>
+<section class="coffee-section coffee-section--cream"><div class="coffee-container"><div class="coffee-section__head"><div><span class="coffee-eyebrow">УЯВНА АФІША</span><h2>Найближчі <em>події.</em></h2></div></div><div class="coffee-events-grid">{events.map((e,i)=><article class="coffee-event-card coffee-reveal" style={`--delay:${i*70}ms`}><img src={e.image} alt={e.title} loading="lazy"/><div class="coffee-event-card__body"><span>{e.tag} · {e.when}</span><h3>{e.title}</h3><p>{e.desc}</p><a href="/demo/coffee/contacts/#booking">Залишити демозаявку ↗</a></div></article>)}</div><p class="coffee-note">Увага: події вигадані для демонстрації функцій сайту. Реальна реєстрація не здійснюється.</p></div></section>
+</CoffeeLayout>

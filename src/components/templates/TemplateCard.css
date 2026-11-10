@@ -1,0 +1,252 @@
+
+/* NORYVIO 2.0 — SHARED TEMPLATE CARD */
+
+.nvt-card,
+.nvt-card * {
+  box-sizing: border-box;
+}
+
+.nvt-card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+
+  border: 1px solid rgba(81, 206, 182, 0.2);
+  border-radius: 21px;
+
+  background: linear-gradient(
+    155deg,
+    #122528 0%,
+    #081519 70%,
+    #061114 100%
+  );
+
+  box-shadow: 0 15px 45px rgba(0, 0, 0, 0.18);
+
+  transition:
+    border-color 320ms ease,
+    box-shadow 320ms ease,
+    transform 320ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.nvt-card:hover,
+.nvt-card:focus-within {
+  border-color: rgba(36, 229, 193, 0.67);
+  box-shadow:
+    0 20px 55px rgba(0, 0, 0, 0.3),
+    0 0 26px rgba(36, 229, 193, 0.09);
+}
+
+.nvt-card:hover {
+  transform: translateY(-5px);
+}
+
+/* Media */
+
+.nvt-card__media {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  aspect-ratio: 1.46;
+  background: #091d1e;
+}
+
+.nvt-card__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+
+  transition: transform 550ms cubic-bezier(.2, .8, .2, 1);
+}
+
+.nvt-card:hover .nvt-card__image {
+  transform: scale(1.055);
+}
+
+.nvt-card__media::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+
+  background: linear-gradient(
+    180deg,
+    rgba(2, 12, 16, 0.12),
+    transparent 52%,
+    rgba(2, 12, 16, 0.45)
+  );
+}
+
+.nvt-card__number,
+.nvt-card__status {
+  position: absolute;
+  z-index: 2;
+  top: 12px;
+  color: #f4faf9;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.nvt-card__number {
+  left: 13px;
+  padding: 6px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.17);
+  border-radius: 99px;
+  background: rgba(2, 12, 17, 0.78);
+}
+
+.nvt-card__status {
+  right: 12px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 9px;
+
+  border: 1px solid rgba(36, 229, 193, 0.32);
+  border-radius: 99px;
+
+  background: rgba(2, 20, 22, 0.82);
+  color: #a6ffea;
+  white-space: nowrap;
+}
+
+.nvt-card__status-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #24e5c1;
+  box-shadow: 0 0 9px #24e5c1;
+}
+
+/* Content */
+
+.nvt-card__body {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding: 20px 17px 16px;
+}
+
+.nvt-card__category {
+  align-self: flex-start;
+  margin-bottom: 11px;
+  color: #24e5c1;
+
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.13em;
+}
+
+.nvt-card__title {
+  margin: 0 0 10px;
+  color: #f5f8fa;
+
+  font-size: clamp(17px, 1.45vw, 21px);
+  font-weight: 800;
+  line-height: 1.24;
+  letter-spacing: -0.045em;
+}
+
+.nvt-card__description {
+  margin: 0 0 20px;
+  color: #a4b3bd;
+
+  font-size: 12px;
+  line-height: 1.7;
+}
+
+.nvt-card__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  margin-top: auto;
+  padding-top: 14px;
+
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.nvt-card__highlight {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  min-width: 0;
+  color: #c9d9db;
+
+  font-size: 10px;
+  font-weight: 650;
+  line-height: 1.4;
+}
+
+.nvt-card__highlight > span {
+  color: #24e5c1;
+  font-weight: 900;
+}
+
+.nvt-card__action {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+
+  width: 38px;
+  height: 38px;
+  border: 1px solid rgba(36, 229, 193, 0.32);
+  border-radius: 50%;
+
+  color: #24e5c1;
+  background: rgba(36, 229, 193, 0.09);
+  text-decoration: none;
+
+  transition:
+    color 250ms ease,
+    background-color 250ms ease,
+    border-color 250ms ease,
+    box-shadow 250ms ease;
+}
+
+.nvt-card__action:hover {
+  color: #031913;
+  background: #24e5c1;
+  border-color: #24e5c1;
+  box-shadow: 0 0 24px rgba(36, 229, 193, 0.24);
+}
+
+.nvt-card__action:focus-visible {
+  outline: 2px solid #66f5d9;
+  outline-offset: 4px;
+}
+
+.nvt-card[hidden] {
+  display: none !important;
+}
+
+.nvt-card[id] {
+  scroll-margin-top: 115px;
+}
+
+@media (max-width: 900px) {
+  .nvt-card__title {
+    font-size: 19px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .nvt-card,
+  .nvt-card__image,
+  .nvt-card__action {
+    transition: none;
+  }
+
+  .nvt-card:hover,
+  .nvt-card:hover .nvt-card__image {
+    transform: none;
+  }
+}

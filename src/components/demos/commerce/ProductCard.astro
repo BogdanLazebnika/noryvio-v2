@@ -1,0 +1,6 @@
+---
+import {shopBase} from '../../../data/commerce';
+interface Props{p:{id:string;name:string;cat:string;price:number;old:number;tag:string;desc:string;photo:string}}
+const {p}=Astro.props;
+---
+<article class="fo-product fo-reveal" data-fo-cat={p.cat} data-fo-title={p.name.toLowerCase()} data-fo-price={p.price}><a class="fo-product-image" href={`${shopBase}product/${p.id}/`}><img src={p.photo} alt={`Фото продукту ${p.name}`} loading="lazy"/>{p.tag&&<span class="fo-product-tag">{p.tag}</span>}</a><button class="fo-fav" type="button" data-favorite={p.id} aria-label={`Додати ${p.name} в обране`} aria-pressed="false">♡</button><div class="fo-product-copy"><span>{p.cat} / DESIGN ESSENTIAL</span><h3><a href={`${shopBase}product/${p.id}/`}>{p.name}</a></h3><p>{p.desc}</p><div class="fo-product-bottom"><div><strong>{p.price.toLocaleString('uk-UA')} ₴</strong>{p.old>0&&<del>{p.old.toLocaleString('uk-UA')} ₴</del>}</div><button type="button" data-add={p.id} aria-label={`Додати ${p.name} у кошик`}>+ Додати</button></div></div></article>

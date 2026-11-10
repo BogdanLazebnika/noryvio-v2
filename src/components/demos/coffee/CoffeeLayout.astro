@@ -1,0 +1,72 @@
+---
+import '../../../styles/demos/coffee.css';
+import { photo } from '../../../data/coffeeMenu';
+interface Props { title: string; description?: string; active?: string; }
+const { title, description = 'Brew & Bloom — демонстраційний сайт кав’ярні від Noryvio.', active = '' } = Astro.props;
+const nav = [ ['/', 'Головна'], ['/menu/', 'Меню'], ['/about/', 'Наша історія'], ['/events/', 'Події'], ['/gallery/', 'Галерея'], ['/contacts/', 'Контакти'] ];
+const base = '/demo/coffee';
+---
+<!doctype html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="theme-color" content="#17120e" />
+  <meta name="robots" content="noindex,nofollow" />
+  <meta name="description" content={description} />
+  <title>{title} — Brew & Bloom · Live Demo by Noryvio</title>
+  <link rel="preconnect" href="https://images.unsplash.com" crossorigin />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body class="coffee-body">
+  <a class="coffee-skip" href="#main-content">До вмісту</a>
+  <div class="coffee-demo-top">
+    <div class="coffee-demo-top__inner">
+      <span class="coffee-demo-top__badge">◆ NORYVIO <span>/ LIVE DEMO</span></span>
+      <span class="coffee-demo-top__hint">Інтерактивний приклад сайту кав’ярні — не справжній заклад</span>
+      <div class="coffee-demo-top__actions"><a href="/templates/">← Каталог Noryvio</a><a class="coffee-demo-top__order" href="/#contacts">Замовити схожий сайт ↗</a></div>
+    </div>
+  </div>
+  <header class="coffee-header" id="top">
+    <div class="coffee-container coffee-header__inner">
+      <a class="coffee-brand" href={base+'/'} aria-label="Brew & Bloom — головна"><span class="coffee-brand__mark">b<span>·</span></span><span class="coffee-brand__name">brew<span>&</span>bloom<small>COFFEE HOUSE / CONCEPT</small></span></a>
+      <nav class="coffee-nav" id="coffee-main-nav" aria-label="Навігація кав'ярні">
+        {nav.map(([path,label]) => <a class:list={{'is-active':active===path}} href={base+path}>{label}</a>)}
+      </nav>
+      <div class="coffee-header__controls">
+        <a class="coffee-cart-link" href={base+'/checkout/'} aria-label="Кошик"><span aria-hidden="true">◈</span><span>Кошик</span> <b data-cart-count>0</b></a>
+        <a class="coffee-header__book" href={base+'/contacts/#booking'}>Забронювати ↗</a>
+        <button class="coffee-menu-toggle" id="coffee-menu-toggle" aria-label="Відкрити меню" aria-expanded="false" aria-controls="coffee-main-nav"><span></span><span></span><span></span></button>
+      </div>
+    </div>
+  </header>
+  <main id="main-content"><slot /></main>
+  <footer class="coffee-footer">
+    <div class="coffee-container">
+      <div class="coffee-footer__top"><div><a class="coffee-brand coffee-brand--footer" href={base+'/'}><span class="coffee-brand__mark">b<span>·</span></span><span class="coffee-brand__name">brew<span>&</span>bloom<small>YOUR DAILY RITUAL</small></span></a><p>Де хороша кава стає частиною хорошого дня. Атмосферний концепт кав’ярні, створений для демонстрації можливостей Noryvio.</p></div><div><h3>Досліджуйте</h3>{nav.slice(0,3).map(([p,l])=><a href={base+p}>{l}</a>)}</div><div><h3>Більше</h3>{nav.slice(3).map(([p,l])=><a href={base+p}>{l}</a>)}<a href={base+'/checkout/'}>Мій кошик</a></div><div><h3>Демо-локація</h3><p>Умовна адреса, Київ</p><p>Щодня: 08:00–21:00</p><p>Усі дані умовні</p></div></div>
+      <div class="coffee-footer__bottom"><span>© {new Date().getFullYear()} Brew & Bloom · Демонстраційний проєкт</span><a href="/">Створено студією Noryvio ↗</a></div>
+    </div>
+  </footer>
+  <div id="coffee-toast" class="coffee-toast" role="status" aria-live="polite"></div>
+  <script is:inline>
+  (()=>{
+    const root='/demo/coffee/';
+    const nav=document.querySelector('#coffee-main-nav'); const toggle=document.querySelector('#coffee-menu-toggle');
+    toggle?.addEventListener('click',()=>{let open=toggle.getAttribute('aria-expanded')!=='true';toggle.setAttribute('aria-expanded',String(open)); nav?.classList.toggle('is-open',open);document.body.classList.toggle('coffee-menu-open',open)});
+    nav?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('is-open');toggle?.setAttribute('aria-expanded','false');document.body.classList.remove('coffee-menu-open')}));
+    const key='noryvio_brew_bloom_demo_cart_v1';
+    function read(){try{const raw=JSON.parse(localStorage.getItem(key)||'{}');return raw && typeof raw==='object' && !Array.isArray(raw) ? raw : {}}catch{return {}}}
+    function write(data){try{localStorage.setItem(key,JSON.stringify(data))}catch{} window.dispatchEvent(new Event('coffee-cart-changed'))}
+    window.CoffeeDemoCart={read,write,add(id){const c=read();c[id]=Math.min(30,(Number(c[id])||0)+1);write(c)},change(id,amount){const c=read();const n=Math.max(0,Math.min(30,(Number(c[id])||0)+amount));if(n)c[id]=n;else delete c[id];write(c)},clear(){write({})}};
+    function counts(){const sum=Object.values(read()).reduce((a,n)=>a+(Number(n)||0),0);document.querySelectorAll('[data-cart-count]').forEach(e=>e.textContent=String(sum))}
+    counts();window.addEventListener('coffee-cart-changed',counts);
+    let toastTimer;window.coffeeToast=(msg)=>{const el=document.querySelector('#coffee-toast');if(!el)return;el.textContent=msg;el.classList.add('is-visible');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('is-visible'),3000)};
+    document.querySelectorAll('[data-add-id]').forEach(btn=>btn.addEventListener('click',()=>{window.CoffeeDemoCart.add(btn.dataset.addId);window.coffeeToast('Додано до демокошика ✓')}));
+    const observer='IntersectionObserver'in window ? new IntersectionObserver(items=>items.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-visible');observer.unobserve(e.target)}}),{threshold:.08,rootMargin:'0px 0px -35px 0px'}):null;
+    document.querySelectorAll('.coffee-reveal').forEach(el=>observer?.observe(el)||(!observer&&el.classList.add('is-visible')));
+  })();
+  </script>
+</body>
+</html>

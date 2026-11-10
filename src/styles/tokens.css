@@ -1,0 +1,40 @@
+
+:root {
+  /* COLORS */
+  --bg: #070d12;
+  --surface: #101b22;
+  --surface-hover: #15252d;
+
+  --text: #f5f8fa;
+  --muted: #a4b3bd;
+  --accent: #24e5c1;
+  --accent-hover: #66f5d9;
+
+  --border: rgba(255, 255, 255, 0.12);
+
+  /* TYPOGRAPHY */
+  --font-main: "Manrope Variable", sans-serif;
+
+  /* LAYOUT */
+  --container: 1200px;
+
+  /* SPACING */
+  --space-1: 8px;
+  --space-2: 12px;
+  --space-3: 16px;
+  --space-4: 24px;
+  --space-5: 32px;
+  --space-6: 48px;
+  --space-7: 64px;
+  --space-8: 96px;
+
+  /* RADIUS */
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 24px;
+  --radius-pill: 999px;
+
+  /* ANIMATIONS */
+  --ease-out: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --transition: 250ms var(--ease-out);
+}

@@ -1,0 +1,351 @@
+
+---
+import "./Header.css";
+import Icon from "./ui/Icon.astro";
+
+import {
+  getLangFromUrl,
+  useTranslations,
+  localizedPath
+} from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+const t = useTranslations(lang);
+
+const homePath = localizedPath("/", lang);
+const blogPath = localizedPath("/blog/", lang);
+
+const path = Astro.url.pathname;
+const isHome = path === homePath;
+const isBlog = path.startsWith(blogPath);
+
+const sectionUrl = (id: string) =>
+  isHome ? `#${id}` : `${homePath}#${id}`;
+
+const navigation = [
+  {
+    id: "home",
+    label: t.nav.home,
+    href: isHome ? "#home" : homePath
+  },
+  {
+    id: "templates",
+    label: t.nav.templates,
+    href: sectionUrl("templates")
+  },
+  {
+    id: "pricing",
+    label: t.nav.pricing,
+    href: sectionUrl("pricing")
+  },
+  {
+    id: "process",
+    label: t.nav.process,
+    href: sectionUrl("process")
+  },
+  {
+    id: "faq",
+    label: t.nav.faq,
+    href: sectionUrl("faq")
+  },
+  {
+    id: "contacts",
+    label: t.nav.contacts,
+    href: sectionUrl("contacts")
+  },
+  {
+    id: "blog",
+    label: t.nav.blog,
+    href: blogPath
+  }
+];
+
+const contactUrl = sectionUrl("contacts");
+---
+
+<header
+  class="nv-header"
+  data-nv-header
+  data-scrolled="false"
+  data-menu-open="false"
+  data-is-home={isHome ? "true" : "false"}
+>
+  <div class="nv-header__inner">
+
+    <a
+      class="nv-header__logo"
+      href={homePath}
+      aria-label="Noryvio"
+    >
+      <span class="nv-header__mark" aria-hidden="true">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+
+      <span class="nv-header__wordmark">
+        noryvio<span>.</span>
+      </span>
+    </a>
+
+    <nav
+      id="nv-header-navigation"
+      class="nv-header__nav"
+      aria-label={t.accessibility.mainNavigation}
+    >
+      {navigation.map((item) => {
+        const active =
+          (item.id === "home" && isHome) ||
+          (item.id === "blog" && isBlog);
+
+        return (
+          <a
+            class="nv-header__link"
+            href={item.href}
+            data-nav-id={item.id}
+            data-active={active ? "true" : "false"}
+            aria-current={active ? "page" : undefined}
+          >
+            {item.label}
+          </a>
+        );
+      })}
+
+      <a
+        class="nv-header__mobile-cta"
+        href={contactUrl}
+      >
+        <span>{t.nav.cta}</span>
+        <Icon name="arrow-up-right" size={18} />
+      </a>
+    </nav>
+
+    <a
+      class="nv-header__cta"
+      href={contactUrl}
+    >
+      <span>{t.nav.cta}</span>
+      <Icon name="arrow-up-right" size={17} />
+    </a>
+
+    <button
+      class="nv-header__toggle"
+      type="button"
+      aria-label={t.accessibility.openMenu}
+      aria-controls="nv-header-navigation"
+      aria-expanded="false"
+      data-label-open={t.accessibility.openMenu}
+      data-label-close={t.accessibility.closeMenu}
+    >
+      <span
+        class="nv-header__toggle-lines"
+        aria-hidden="true"
+      >
+        <span></span>
+        <span></span>
+        <span></span>
+      </span>
+    </button>
+
+  </div>
+</header>
+
+<script>
+  const header =
+    document.querySelector<HTMLElement>("[data-nv-header]");
+
+  if (header) {
+    const toggle =
+      header.querySelector<HTMLButtonElement>(
+        ".nv-header__toggle"
+      );
+
+    const links = Array.from(
+      header.querySelectorAll<HTMLAnchorElement>(
+        "[data-nav-id]"
+      )
+    );
+
+    const menuLinks = header.querySelectorAll<HTMLAnchorElement>(
+      ".nv-header__nav a"
+    );
+
+    const desktopQuery =
+      window.matchMedia("(min-width: 901px)");
+
+    const reducedMotion =
+      window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    const isHome = header.dataset.isHome === "true";
+
+    const sectionIds = [
+      "templates",
+      "pricing",
+      "process",
+      "faq",
+      "contacts"
+    ];
+
+    const sections = sectionIds
+      .map((id) => document.getElementById(id))
+      .filter(
+        (element): element is HTMLElement =>
+          element !== null
+      );
+
+    function setMenu(open: boolean) {
+      header!.dataset.menuOpen = String(open);
+
+      if (!toggle) return;
+
+      toggle.setAttribute(
+        "aria-expanded",
+        String(open)
+      );
+
+      toggle.setAttribute(
+        "aria-label",
+        open
+          ? toggle.dataset.labelClose || "Закрити меню"
+          : toggle.dataset.labelOpen || "Відкрити меню"
+      );
+    }
+
+    function setActive(id: string) {
+      links.forEach((link) => {
+        const active = link.dataset.navId === id;
+
+        link.dataset.active = String(active);
+
+        if (active) {
+          link.setAttribute(
+            "aria-current",
+            id === "home" || id === "blog"
+              ? "page"
+              : "location"
+          );
+        } else {
+          link.removeAttribute("aria-current");
+        }
+      });
+    }
+
+    function syncHeader() {
+      header!.dataset.scrolled =
+        String(window.scrollY > 40);
+    }
+
+    function syncActiveSection() {
+      if (!isHome) return;
+
+      const triggerLine = Math.min(
+        window.innerHeight * 0.32,
+        230
+      );
+
+      let current = "home";
+
+      for (const section of sections) {
+        if (
+          section.getBoundingClientRect().top <= triggerLine
+        ) {
+          current = section.id;
+        }
+      }
+
+      const reachedBottom =
+        window.innerHeight + window.scrollY >=
+        document.documentElement.scrollHeight - 4;
+
+      if (reachedBottom && sections.length > 0) {
+        current = sections[sections.length - 1].id;
+      }
+
+      setActive(current);
+    }
+
+    let scheduled = false;
+
+    function onScroll() {
+      if (scheduled) return;
+
+      scheduled = true;
+
+      window.requestAnimationFrame(() => {
+        scheduled = false;
+        syncHeader();
+        syncActiveSection();
+      });
+    }
+
+    toggle?.addEventListener("click", () => {
+      setMenu(header.dataset.menuOpen !== "true");
+    });
+
+    menuLinks.forEach((link) => {
+      link.addEventListener("click", () => {
+        setMenu(false);
+      });
+    });
+
+    // Головна -> нагору без перезавантаження.
+    const homeLink = header.querySelector<HTMLAnchorElement>(
+      '[data-nav-id="home"]'
+    );
+
+    homeLink?.addEventListener("click", (event) => {
+      if (!isHome) return;
+
+      event.preventDefault();
+
+      window.history.replaceState(
+        window.history.state,
+        "",
+        window.location.pathname + window.location.search
+      );
+
+      window.scrollTo({
+        top: 0,
+        behavior: reducedMotion.matches ? "auto" : "smooth"
+      });
+
+      setActive("home");
+      setMenu(false);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (
+        event.key === "Escape" &&
+        header.dataset.menuOpen === "true"
+      ) {
+        setMenu(false);
+        toggle?.focus();
+      }
+    });
+
+    document.addEventListener("pointerdown", (event) => {
+      if (
+        event.target instanceof Node &&
+        !header.contains(event.target)
+      ) {
+        setMenu(false);
+      }
+    });
+
+    desktopQuery.addEventListener("change", () => {
+      setMenu(false);
+    });
+
+    window.addEventListener("scroll", onScroll, {
+      passive: true
+    });
+
+    window.addEventListener("resize", onScroll, {
+      passive: true
+    });
+
+    syncHeader();
+    syncActiveSection();
+  }
+</script>

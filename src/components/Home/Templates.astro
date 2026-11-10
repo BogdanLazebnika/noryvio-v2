@@ -1,0 +1,167 @@
+
+---
+import "./Templates.css";
+
+import TemplateCard from "../templates/TemplateCard.astro";
+import Icon from "../ui/Icon.astro";
+
+import { templateConcepts } from "../../data/templateCatalog";
+
+import {
+  getLangFromUrl,
+  localizedPath
+} from "../../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+
+const copy = {
+  uk: {
+    eyebrow: "02 / КОНЦЕПТИ ДИЗАЙНУ",
+    title: "Шаблони для",
+    accent: "різних бізнесів.",
+    description:
+      "П'ять візуальних напрямків для майбутніх сайтів. Кожен дизайн можна розвинути та адаптувати під ваш бренд і потреби.",
+    browse: "Переглянути всі концепти",
+    note:
+      "Представлені дизайни — візуальні концепти. Склад робіт, функціональність і вартість обговорюємо індивідуально.",
+    ctaEyebrow: "NORYVIO / ІНДИВІДУАЛЬНИЙ ПІДХІД",
+    ctaTitle: "Не знайшли свій напрямок?",
+    ctaDescription:
+      "Обговоримо вашу ідею та підберемо відповідний підхід.",
+    ctaButton: "Обговорити проєкт",
+    swipe: "Гортайте картки вбік"
+  },
+  en: {
+    eyebrow: "02 / DESIGN CONCEPTS",
+    title: "Website designs",
+    accent: "for different businesses.",
+    description:
+      "Five visual directions for future websites. Each design can be adapted and developed for your brand and goals.",
+    browse: "Explore all concepts",
+    note:
+      "These are visual concepts. Scope, functionality and pricing are discussed individually.",
+    ctaEyebrow: "NORYVIO / PERSONAL APPROACH",
+    ctaTitle: "Need something different?",
+    ctaDescription:
+      "Tell us about your idea and we'll discuss the best approach.",
+    ctaButton: "Discuss a project",
+    swipe: "Swipe to explore"
+  }
+}[lang];
+
+const catalogUrl = localizedPath("/templates/", lang);
+const contactUrl = localizedPath("/#contacts", lang);
+---
+
+<section
+  id="templates"
+  class="nt2-section"
+  aria-labelledby="nt2-title"
+>
+  <!-- Декоративне освітлення -->
+  <div class="nt2-ambient" aria-hidden="true"></div>
+
+  <div class="nt2-container">
+
+    <div class="nt2-heading">
+
+      <div
+        class="nt2-heading__copy"
+        data-nt2-reveal
+      >
+        <p class="nt2-eyebrow">
+          <span
+            class="nt2-eyebrow__dot"
+            aria-hidden="true"
+          ></span>
+
+          {copy.eyebrow}
+        </p>
+
+        <h2 id="nt2-title">
+          {copy.title}
+          <span>{copy.accent}</span>
+        </h2>
+
+        <p class="nt2-description">
+          {copy.description}
+        </p>
+      </div>
+
+      <a
+        class="nt2-browse"
+        href={catalogUrl}
+        data-nt2-reveal
+        data-nt2-delay="90"
+      >
+        <span>{copy.browse}</span>
+        <Icon name="arrow-up-right" size={19} />
+      </a>
+
+    </div>
+
+    <!-- П'ять карток з окремими зображеннями -->
+    <div class="nt2-grid">
+      {templateConcepts.map((item, index) => (
+        <div
+          class="nt2-card-slot"
+          data-nt2-reveal
+          data-nt2-delay={index * 75}
+        >
+          <TemplateCard
+            item={item}
+            index={index + 1}
+            lang={lang}
+            mode="home"
+          />
+        </div>
+      ))}
+    </div>
+
+    <p class="nt2-swipe-hint">
+      {copy.swipe}
+      <span aria-hidden="true">↔</span>
+    </p>
+
+    <p
+      class="nt2-footnote"
+      data-nt2-reveal
+    >
+      {copy.note}
+    </p>
+
+    <!-- Фінальний заклик -->
+    <div
+      class="nt2-cta"
+      data-nt2-reveal
+    >
+      <div class="nt2-cta__copy">
+        <p class="nt2-cta__eyebrow">
+          {copy.ctaEyebrow}
+        </p>
+
+        <h3>{copy.ctaTitle}</h3>
+
+        <p>{copy.ctaDescription}</p>
+      </div>
+
+      <a
+        class="nt2-cta__button"
+        href={contactUrl}
+      >
+        <span>{copy.ctaButton}</span>
+        <Icon name="arrow-up-right" size={19} />
+      </a>
+    </div>
+
+  </div>
+</section>
+
+<script>
+  import { registerReveals } from "../../scripts/reveal";
+  const section = document.querySelector<HTMLElement>("#templates.nt2-section");
+  registerReveals(section, "[data-nt2-reveal]", "data-nt2-delay", 720);
+
+
+
+</script>

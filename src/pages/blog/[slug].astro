@@ -1,0 +1,76 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { blogPosts, type BlogPost } from '../../data/blogPosts';
+import '../../styles/blog.css';
+
+export function getStaticPaths() {
+  return blogPosts.map((post) => ({ params: { slug: post.slug }, props: { post } }));
+}
+
+const { post } = Astro.props as { post: BlogPost };
+const related = blogPosts.filter((item) => item.slug !== post.slug).slice(0, 2);
+const dateFormat = new Intl.DateTimeFormat('uk-UA', { day: 'numeric', month: 'long', year: 'numeric' });
+const published = dateFormat.format(new Date(`${post.publishedAt}T12:00:00Z`));
+---
+
+<BaseLayout title={`${post.title} — блог Noryvio`} description={post.description}>
+  <main class="nb-article">
+    <div class="nb-blog__ambient" aria-hidden="true"></div>
+    <div class="nb-blog__container">
+      <nav class="nb-article__breadcrumb" aria-label="Навігація сторінками">
+        <a href="/">Головна</a><span aria-hidden="true">/</span>
+        <a href="/blog/">Блог</a><span aria-hidden="true">/</span>
+        <span aria-current="page">Стаття</span>
+      </nav>
+      <header class="nb-article__header">
+        <span class="nb-blog__tag">{post.category} <span>·</span> {post.readingMinutes} хв читання</span>
+        <h1>{post.title}</h1>
+        <p>{post.excerpt}</p>
+        <div class="nb-article__meta"><span>NORYVIO / РЕДАКЦІЯ</span><time datetime={post.publishedAt}>{published}</time></div>
+      </header>
+      <div class="nb-article__layout">
+        <article class="nb-article__body">
+          <div class="nb-article__intro">
+            {post.intro.map((paragraph) => <p>{paragraph}</p>)}
+          </div>
+          {post.sections.map((section, index) => (
+            <section class="nb-article__section" id={`section-${index + 1}`} aria-labelledby={`heading-${index + 1}`}>
+              <h2 id={`heading-${index + 1}`}>{section.heading}</h2>
+              {section.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+              {section.bullets && (
+                <ul>{section.bullets.map((bullet) => <li>{bullet}</li>)}</ul>
+              )}
+            </section>
+          ))}
+          <aside class="nb-article__takeaway"><span>ГОЛОВНА ДУМКА</span><p>{post.takeaway}</p></aside>
+          <div class="nb-article__end"><span>Дякуємо за читання</span><a href="/blog/"><Icon name="arrow-right" size={18}/> Усі статті</a></div>
+        </article>
+        <aside class="nb-article__sidebar" aria-label="Навігація статтею">
+          <div class="nb-article__toc">
+            <h2>У цій статті</h2>
+            <ol>
+              {post.sections.map((section, index) => <li><a href={`#section-${index + 1}`}>{section.heading}</a></li>)}
+            </ol>
+          </div>
+          <div class="nb-article__side-cta"><span>ПОТРІБЕН САЙТ?</span><p>Обговоримо ваш проєкт та підберемо рішення.</p><a href="/#contacts">Залишити заявку <Icon name="arrow-up-right" size={17}/></a></div>
+        </aside>
+      </div>
+      <section class="nb-article__related" aria-labelledby="related-title">
+        <div class="nb-blog__section-bar"><h2 id="related-title">Читайте також</h2><a href="/blog/">Усі матеріали <Icon name="arrow-right" size={16}/></a></div>
+        <div class="nb-blog__grid nb-blog__grid--related">
+          {related.map((item) => (
+            <a class="nb-article-card" href={`/blog/${item.slug}/`}>
+              <div class="nb-article-card__content">
+                <span class="nb-blog__tag">{item.category} <span>·</span> {item.readingMinutes} хв</span>
+                <h3>{item.title}</h3>
+                <p>{item.excerpt}</p>
+                <span class="nb-article-card__more">Читати <Icon name="arrow-up-right" size={18}/></span>
+              </div>
+            </a>
+          ))}
+        </div>
+      </section>
+    </div>
+  </main>
+</BaseLayout>

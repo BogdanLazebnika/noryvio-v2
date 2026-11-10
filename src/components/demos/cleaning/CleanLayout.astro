@@ -1,0 +1,39 @@
+---
+import '../../../styles/demos/cleaning.css';
+import {base} from '../../../data/cleaning';
+interface Props {title:string;description?:string;active?:string}
+const {title,description='LUMA — демонстраційний багатосторінковий сайт клінінгового сервісу від Noryvio.',active=''}=Astro.props;
+const nav=[['','Головна'],['services/','Послуги'],['prices/','Ціни'],['about/','Про нас'],['reviews/','Відгуки'],['contacts/','Контакти']];
+---
+<!doctype html>
+<html lang="uk">
+<head>
+ <meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1"/>
+ <meta name="theme-color" content="#f6f8f3"/><meta name="robots" content="noindex,nofollow"/>
+ <meta name="description" content={description}/><title>{title} — LUMA Clean · Noryvio Live Demo</title>
+ <link rel="preconnect" href="https://fonts.googleapis.com"/><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+ <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+</head>
+<body class="cl-body">
+ <a class="cl-skip" href="#main">Перейти до вмісту</a>
+ <div class="cl-demo"><div class="cl-wrap cl-demo__inner"><div class="cl-demo__brand">✳ <strong>NORYVIO</strong><span>/ LIVE DEMO</span></div><p>Вигаданий клінінговий сервіс · замовлення демонстраційні</p><div class="cl-demo__links"><a href="/templates/">← До каталогу</a><a href="/#contacts" class="cl-demo__order">Замовити схожий сайт ↗</a></div></div></div>
+ <header class="cl-header" id="top"><div class="cl-wrap cl-header__inner">
+   <a class="cl-logo" href={base} aria-label="LUMA — головна"><span class="cl-logo__symbol" aria-hidden="true">✳</span><span>LUMA<small>CLEAN LIVING / CONCEPT</small></span></a>
+   <nav class="cl-nav" id="cl-nav" aria-label="Головна навігація">{nav.map(([p,l])=><a href={base+p} class:list={{'is-active':p===active}}>{l}</a>)}</nav>
+   <div class="cl-header__actions"><a class="cl-button cl-button--small" href={base+'booking/'}>Замовити прибирання <span aria-hidden="true">↗</span></a><button class="cl-burger" id="cl-burger" aria-controls="cl-nav" aria-expanded="false" aria-label="Відкрити меню"><span></span><span></span><span></span></button></div>
+ </div></header>
+ <main id="main"><slot/></main>
+ <footer class="cl-footer"><div class="cl-wrap"><div class="cl-footer__main"><div><a class="cl-logo cl-logo--footer" href={base}><span class="cl-logo__symbol">✳</span><span>LUMA<small>ROOM TO BREATHE</small></span></a><p>Ми показуємо, яким може бути сучасний сервіс прибирання: спокійний дизайн, зрозумілі ціни та зручний запис.</p><span class="cl-pill">Демонстраційний проєкт Noryvio</span></div><div><h3>Навігація</h3>{nav.slice(0,3).map(([p,l])=><a href={base+p}>{l}</a>)}</div><div><h3>Дізнатись більше</h3>{nav.slice(3).map(([p,l])=><a href={base+p}>{l}</a>)}<a href={base+'booking/'}>Онлайн-запис</a></div><div><h3>Важливо</h3><p>Жодна заявка з цього сайту не відправляється справжній компанії.</p><a href="/#contacts">Замовити такий сайт ↗</a></div></div><div class="cl-footer__bottom"><span>© {new Date().getFullYear()} LUMA · Концепт від Noryvio</span><a href="/templates/">Повернутися до шаблонів ↑</a></div></div></footer>
+ <div class="cl-toast" id="cl-toast" aria-live="polite" role="status"></div>
+ <script is:inline>
+ (()=>{
+  const toggle=document.querySelector('#cl-burger'),nav=document.querySelector('#cl-nav');
+  toggle?.addEventListener('click',()=>{const open=toggle.getAttribute('aria-expanded')!=='true';toggle.setAttribute('aria-expanded',String(open));nav?.classList.toggle('is-open',open);document.body.classList.toggle('cl-nav-open',open)});
+  nav?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('is-open');toggle?.setAttribute('aria-expanded','false');document.body.classList.remove('cl-nav-open')}));
+  const obs=('IntersectionObserver' in window)?new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('is-visible');obs.unobserve(e.target)}}),{threshold:.08,rootMargin:'0px 0px -28px 0px'}):null;
+  document.querySelectorAll('.cl-reveal').forEach(e=>obs?obs.observe(e):e.classList.add('is-visible'));
+  let t;window.clToast=(msg)=>{const el=document.querySelector('#cl-toast');if(!el)return;el.textContent=msg;el.classList.add('is-on');clearTimeout(t);t=setTimeout(()=>el.classList.remove('is-on'),3400)};
+ })();
+ </script>
+</body>
+</html>

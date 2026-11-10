@@ -1,0 +1,232 @@
+---
+import "../../../styles/demos/detailing.css";
+const year = new Date().getFullYear();
+const img = "/images/demos/detailing";
+const services = [
+  { n: "01", name: "Корекція лаку", en: "PAINT CORRECTION", desc: "Делікатно прибираємо дрібні дефекти та повертаємо кузову дзеркальну глибину.", image: `${img}/polishing.webp`, alt: "Майстер полірує кузов автомобіля машинкою", mark: "01 / FINISH" },
+  { n: "02", name: "Керамічний захист", en: "CERAMIC COATING", desc: "Гідрофобне покриття, завдяки якому автомобіль довше зберігає виразний вигляд.", image: `${img}/ceramic.webp`, alt: "Краплі води на захисному покритті кузова", mark: "02 / PROTECT" },
+  { n: "03", name: "Детейлінг салону", en: "INTERIOR DETAILING", desc: "Увага до текстур, матеріалів і кожного сантиметра простору всередині.", image: `${img}/interior.webp`, alt: "Шкіряний салон преміального автомобіля", mark: "03 / RESTORE" },
+  { n: "04", name: "Диски та деталі", en: "WHEELS & TRIM", desc: "Точковий догляд за колесами, декоративними елементами та складними зонами.", image: `${img}/wheels.webp`, alt: "Спортивне автомобільне колесо з глянцевими спицями", mark: "04 / REFINE" },
+];
+const steps = [
+  { n:"01", title:"Знайомство", text:"Обговорюємо стан авто, очікування та підбираємо доречні процедури." },
+  { n:"02", title:"Діагностика", text:"Оглядаємо поверхні, визначаємо пріоритети й узгоджуємо план робіт." },
+  { n:"03", title:"Точна робота", text:"Послідовно опрацьовуємо кузов, салон і деталі без поспіху." },
+  { n:"04", title:"Фінальний штрих", text:"Перевіряємо результат і пояснюємо правила подальшого догляду." },
+];
+const gallery = [
+ { src:`${img}/car-front.webp`, title:"Sculpted reflections", category:"Кузов", alt:"Темний автомобіль у студії детейлінгу" },
+ { src:`${img}/polishing.webp`, title:"Surface perfection", category:"Процес", alt:"Полірування кузова" },
+ { src:`${img}/ceramic.webp`, title:"Hydrophobic finish", category:"Захист", alt:"Захисне покриття і краплі води" },
+ { src:`${img}/interior.webp`, title:"Quiet luxury", category:"Салон", alt:"Деталь шкіряного автосалону" },
+ { src:`${img}/wheels.webp`, title:"The final detail", category:"Деталі", alt:"Колесо преміального автомобіля" },
+];
+---
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#070a0c" />
+    <meta name="robots" content="noindex, nofollow" />
+    <meta name="description" content="Демонстраційний сайт преміальної студії автодетейлінгу — концепт від Noryvio. Дизайн, послуги, галерея та інтерактивний перегляд." />
+    <title>OBSIDIAN — Auto Atelier · Концепт Noryvio</title>
+    <link rel="preload" as="image" href={`${img}/hero.webp`} />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Перейти до вмісту</a>
+    <div class="reading-progress" aria-hidden="true" data-reading></div>
+    <header class="site-header" id="top" data-header>
+      <div class="wrap header-inner">
+        <a href="#top" class="brand" aria-label="Obsidian — на початок">
+          <span class="brand-mark" aria-hidden="true"><span></span></span>
+          <span class="brand-type">OBSIDIAN<small>AUTO ATELIER</small></span>
+        </a>
+        <nav class="desktop-nav" aria-label="Головна навігація">
+          <a href="#services">Послуги</a>
+          <a href="#philosophy">Підхід</a>
+          <a href="#works">Роботи</a>
+          <a href="#process">Процес</a><a href="#estimate">Калькулятор</a>
+        </nav>
+        <a class="header-cta" href="#estimate" data-demo-inquiry>Розрахувати догляд <span aria-hidden="true">↗</span></a>
+        <button class="menu-toggle" type="button" aria-label="Відкрити меню" aria-expanded="false" aria-controls="mobile-nav" data-menu-toggle><span></span><span></span></button>
+      </div>
+      <nav class="mobile-nav" id="mobile-nav" aria-label="Мобільна навігація" inert data-mobile-nav>
+        <a href="#services">Послуги</a><a href="#philosophy">Підхід</a><a href="#works">Роботи</a><a href="#process">Процес</a><a href="#estimate">Калькулятор</a>
+        <a href="/#contacts">Обговорити схожий сайт ↗</a>
+      </nav>
+    </header>
+
+    <main id="main">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-grid" aria-hidden="true"></div>
+        <div class="hero-ambient" aria-hidden="true"></div>
+        <div class="hero-photo" role="img" aria-label="Темний спортивний седан у студії детейлінгу"></div>
+        <div class="hero-image-vignette" aria-hidden="true"></div>
+        <div class="wrap hero-layout">
+          <div class="hero-copy">
+            <div class="eyebrow hero-eyebrow"><span class="eyebrow-line"></span> THE ART OF PRECISION <span class="eyebrow-dot"></span> EST. IN DETAIL</div>
+            <h1 id="hero-title">Краса —<br />у <em>деталях.</em></h1>
+            <p class="hero-lead">Автомобіль — більше, ніж рух. Ми створюємо простір, де кожна лінія, відблиск і фактура отримують належну увагу.</p>
+            <div class="hero-actions">
+              <a class="btn btn-primary" href="#services">Дослідити послуги <span class="btn-arrow" aria-hidden="true">↗</span></a>
+              <a class="text-link" href="#works"><span class="play-dot" aria-hidden="true">↗</span> Дивитися роботи</a>
+            </div>
+            <div class="hero-caption"><span class="caption-dash"></span> ДЕМОНСТРАЦІЙНИЙ КОНЦЕПТ / NORYVIO STUDIO</div>
+          </div>
+          <div class="hero-rail" aria-hidden="true"><span>01</span><span class="rail-line"></span><span>05</span></div>
+        </div>
+        <div class="hero-bottom wrap">
+          <span>01 — 05 <span class="muted">/ ЕСТЕТИКА РУХУ</span></span>
+          <a href="#services" class="scroll-cue">ГОРТАЙТЕ ВНИЗ <span aria-hidden="true">↓</span></a>
+          <span class="hero-bottom-last">DESIGNED TO BE NOTICED</span>
+        </div>
+      </section>
+
+      <div class="ticker" aria-hidden="true"><div class="ticker-track"><span>PRECISION IS AN ATTITUDE</span><i>✳</i><span>CRAFTED FOR THE EXTRAORDINARY</span><i>✳</i><span>EVERY DETAIL MATTERS</span><i>✳</i><span>PRECISION IS AN ATTITUDE</span><i>✳</i><span>CRAFTED FOR THE EXTRAORDINARY</span><i>✳</i><span>EVERY DETAIL MATTERS</span><i>✳</i></div></div>
+
+      <section class="section services" id="services" aria-labelledby="services-title">
+        <div class="wrap">
+          <div class="section-heading" data-reveal>
+            <div><div class="eyebrow"><span class="eyebrow-line"></span> 01 / НАША ЕКСПЕРТИЗА</div><h2 id="services-title">Рівень догляду,<br /><span class="serif-accent">який відчувається.</span></h2></div>
+            <p>Продуманий процес для тих, хто помічає різницю між просто чистим автомобілем і бездоганним виглядом.</p>
+          </div>
+          <div class="service-grid">
+            {services.map((service, i) => <article class="service-card" data-reveal style={`--delay:${i*85}ms`}>
+              <div class="service-image"><img src={service.image} alt={service.alt} loading="lazy" decoding="async" width="960" height="500" /><span class="service-top-index">{service.n} / 04</span><span class="image-cross" aria-hidden="true">+</span></div>
+              <div class="service-content"><span class="micro">{service.en}</span><h3>{service.name}</h3><p>{service.desc}</p><a href="#estimate" aria-label={`Розрахувати ${service.name}`} class="service-button">Детальніше <span aria-hidden="true">↗</span></a></div>
+            </article>)}
+          </div>
+        </div>
+      </section>
+
+      <section class="philosophy" id="philosophy" aria-labelledby="philosophy-title">
+        <div class="wrap philosophy-grid">
+          <div class="philosophy-visual" data-reveal><img src={`${img}/car-front.webp`} loading="lazy" alt="Глянцевий чорний автомобіль під освітленням детейлінг-студії" width="1158" height="790" /><span class="visual-label">OBSIDIAN / SIGNATURE DETAIL</span><span class="frame-corner frame-corner-top" aria-hidden="true"></span><span class="frame-corner frame-corner-bottom" aria-hidden="true"></span></div>
+          <div class="philosophy-copy" data-reveal><div class="eyebrow"><span class="eyebrow-line"></span> 02 / НАША ФІЛОСОФІЯ</div><h2 id="philosophy-title">Не просто<br />догляд.<br /><em>Ставлення.</em></h2><p class="philosophy-intro">Ми переконані: преміальність не обов'язково має бути гучною. Вона відчувається в точності рухів, повазі до матеріалу й результаті, який хочеться роздивлятися.</p><div class="manifesto-lines"><div><span>01</span><strong>Увага до поверхні</strong></div><div><span>02</span><strong>Делікатність у кожному русі</strong></div><div><span>03</span><strong>Результат без компромісів</strong></div></div><a class="text-link philosophy-link" href="#process">Дізнатися про процес <span aria-hidden="true">↗</span></a></div>
+        </div>
+      </section>
+
+      <section class="section works" id="works" aria-labelledby="works-title">
+        <div class="wrap"><div class="section-heading works-heading" data-reveal><div><div class="eyebrow"><span class="eyebrow-line"></span> 03 / ВІЗУАЛЬНА ІСТОРІЯ</div><h2 id="works-title">Моменти,<br /><span class="serif-accent">що говорять самі.</span></h2></div><p>Світло, текстури, відблиски. Досліджуйте естетику процесу через деталі.</p></div>
+          <div class="gallery-filters" role="group" aria-label="Фільтр галереї" data-reveal><button type="button" class="is-active" data-filter="all" aria-pressed="true">Усі кадри <span>05</span></button><button type="button" data-filter="Кузов" aria-pressed="false">Кузов</button><button type="button" data-filter="Процес" aria-pressed="false">Процес</button><button type="button" data-filter="Захист" aria-pressed="false">Захист</button><button type="button" data-filter="Салон" aria-pressed="false">Салон</button><button type="button" data-filter="Деталі" aria-pressed="false">Деталі</button></div>
+          <div class="gallery-grid" data-gallery>
+            {gallery.map((item,i)=><button class={`gallery-item gallery-item-${i+1}`} type="button" data-image={item.src} data-title={item.title} data-category={item.category} data-reveal style={`--delay:${i*60}ms`} aria-label={`Збільшити фото: ${item.alt}`}><img src={item.src} alt={item.alt} loading="lazy" decoding="async" /><span class="gallery-overlay"><span><small>{item.category}</small><strong>{item.title}</strong></span><span class="gallery-enlarge" aria-hidden="true">↗</span></span></button>)}
+          </div>
+          <p class="gallery-note">* Візуалізації демонструють дизайн-концепт. Це не фотографії виконаних замовлень реальної студії.</p>
+        </div>
+      </section>
+
+      <section class="process section" id="process" aria-labelledby="process-title"><div class="wrap"><div class="section-heading" data-reveal><div><div class="eyebrow"><span class="eyebrow-line"></span> 04 / ЯК ЦЕ ВІДБУВАЄТЬСЯ</div><h2 id="process-title">Майстерність<br /><span class="serif-accent">у послідовності.</span></h2></div><p>Чотири етапи, у яких увага до деталей стає частиною кожного рішення.</p></div><div class="process-list">{steps.map((step,i)=><div class="process-row" data-reveal style={`--delay:${i*60}ms`}><span class="process-number">{step.n}</span><h3>{step.title}</h3><p>{step.text}</p><span class="process-arrow" aria-hidden="true">↗</span></div>)}</div></div></section>
+
+
+      <section class="od-estimator" id="estimate" aria-labelledby="estimate-title">
+        <div class="wrap od-estimator-layout">
+          <div class="od-estimator-copy" data-reveal>
+            <div class="eyebrow"><span class="eyebrow-line"></span> 05 / ІНТЕРАКТИВНИЙ КОНФІГУРАТОР</div>
+            <h2 id="estimate-title">Зберіть свій <em>ідеальний догляд.</em></h2>
+            <p>Оберіть послугу, розмір автомобіля та додаткові опції. Орієнтовний бюджет перераховується миттєво — так працюватиме справжній конфігуратор для клієнтів вашої студії.</p>
+            <div class="od-estimator-photo"><img src={`${img}/polishing.webp`} alt="Процес машинного полірування кузова" loading="lazy" width="960" height="500"/></div>
+          </div>
+          <form class="od-config" id="od-config">
+            <div class="od-config-top"><span>DETAIL YOUR DRIVE</span><span>01 — 03</span></div>
+            <label for="od-service">01 / Основна послуга</label>
+            <select id="od-service" name="service"><option value="polish" data-cost="4500">Полірування кузова — від 4 500 ₴</option><option value="ceramic" data-cost="7600">Керамічний захист — від 7 600 ₴</option><option value="interior" data-cost="3200">Детейлінг салону — від 3 200 ₴</option><option value="full" data-cost="12500">Повний комплекс — від 12 500 ₴</option></select>
+            <fieldset><legend>02 / Розмір автомобіля</legend><div class="od-segments"><label><input type="radio" name="vehicle" value="1" checked/><span>Седан</span></label><label><input type="radio" name="vehicle" value="1.2"/><span>Кросовер</span></label><label><input type="radio" name="vehicle" value="1.4"/><span>Позашляховик</span></label></div></fieldset>
+            <fieldset><legend>03 / Додатково</legend><label class="od-check"><input type="checkbox" name="extra" value="900"/><span>Антидощ на скло</span><b>+900 ₴</b></label><label class="od-check"><input type="checkbox" name="extra" value="1200"/><span>Детейлінг дисків</span><b>+1 200 ₴</b></label><label class="od-check"><input type="checkbox" name="extra" value="1500"/><span>Озонування салону</span><b>+1 500 ₴</b></label></fieldset>
+            <div class="od-total"><span>Орієнтовна вартість</span><strong id="od-total" aria-live="polite">4 500 ₴</strong><small>Демонстраційні ціни, не реальна комерційна пропозиція.</small></div>
+            <button class="od-primary" type="button" id="od-summary">Сформувати підсумок ↗</button>
+            <p class="od-summary" id="od-result" hidden role="status"></p>
+            <a class="od-secondary" href="/#contacts">Замовити схожий сайт у Noryvio ↗</a>
+          </form>
+        </div>
+      </section>
+      <section class="od-compare wrap" aria-labelledby="od-compare-title"><div class="section-heading" data-reveal><div><div class="eyebrow"><span class="eyebrow-line"></span> 06 / ДО ТА ПІСЛЯ</div><h2 id="od-compare-title">Побачте <span class="serif-accent">різницю.</span></h2></div><p>Потягніть повзунок і порівняйте два демонстраційні кадри.</p></div><div class="od-compare-frame" id="od-compare-frame"><img class="od-compare-base" src={`${img}/car-front.webp`} alt="Кузов автомобіля з матовим виглядом"/><div class="od-compare-reveal" id="od-compare-reveal"><img src={`${img}/hero.webp`} alt="Автомобіль у драматичному студійному світлі"/></div><span class="od-tag od-tag-before">КАДР 01</span><span class="od-tag od-tag-after">КАДР 02</span><span class="od-handle" aria-hidden="true">↔</span><input aria-label="Порівняти демонстраційні фотографії" type="range" id="od-compare-range" min="0" max="100" value="50"/></div><p class="od-image-note">Це порівняння двох концептуальних фотографій, а не задокументований результат обробки одного автомобіля.</p></section>
+
+      <section class="closing" id="inquiry" aria-labelledby="closing-title"><div class="closing-glow" aria-hidden="true"></div><div class="wrap closing-inner" data-reveal><div class="eyebrow"><span class="eyebrow-line"></span> 05 / НАСТУПНИЙ КРОК</div><span class="closing-overline">YOUR NEXT CHAPTER STARTS HERE</span><h2 id="closing-title">Враження починається<br /><em>з першого погляду.</em></h2><p>Сподобався цей формат? Noryvio адаптує подібний дизайн під ваш бренд, послуги та реальні бізнес-завдання.</p><a class="btn btn-primary closing-button" href="/#contacts">Хочу схожий сайт <span class="btn-arrow" aria-hidden="true">↗</span></a><span class="closing-footnote">ЦЕ ДЕМОНСТРАЦІЯ ДИЗАЙНУ, А НЕ ДІЮЧА СТУДІЯ АВТОДЕТЕЙЛІНГУ</span></div></section>
+    </main>
+
+    <footer class="demo-footer"><div class="wrap demo-footer-top"><a href="#top" class="brand footer-brand"><span class="brand-mark" aria-hidden="true"><span></span></span><span class="brand-type">OBSIDIAN<small>AUTO ATELIER</small></span></a><p>Кожна деталь має значення.<br />Кожен дотик залишає враження.</p><a href="#top" class="back-top">Нагору ↑</a></div><div class="wrap demo-footer-bottom"><span>© {year} OBSIDIAN — DESIGN CONCEPT</span><span>СТВОРЕНО ДЛЯ ДЕМОНСТРАЦІЇ МОЖЛИВОСТЕЙ</span><a href="/templates/">BY NORYVIO STUDIO ↗</a></div></footer>
+
+    <aside class="noryvio-demo-bar" aria-label="Демонстраційний режим" data-demo-bar><div class="demo-bar-brand"><span class="demo-bar-light"></span><span><strong>NORYVIO</strong><small>LIVE DEMO · AUTO DETAILING</small></span></div><div class="demo-bar-actions"><a href="/templates/" class="demo-bar-back"><span aria-hidden="true">←</span> До каталогу</a><a href="/#contacts" class="demo-bar-order">Замовити схожий <span aria-hidden="true">↗</span></a></div><button class="demo-bar-collapse" type="button" aria-expanded="true" aria-label="Згорнути демопанель" data-demo-collapse>⌄</button></aside>
+
+    <dialog class="lightbox" aria-label="Збільшене фото галереї" data-lightbox><form method="dialog"><button class="lightbox-close" aria-label="Закрити зображення">✕</button></form><img src="" alt="" data-lightbox-img /><div class="lightbox-caption"><span data-lightbox-category></span><strong data-lightbox-title></strong></div></dialog>
+
+    <script is:inline>
+      (()=>{
+        const form=document.getElementById('od-config');if(!form)return;
+        const money=n=>new Intl.NumberFormat('uk-UA').format(n)+' ₴';
+        function calc(){const sel=form.querySelector('#od-service');const val=Number(sel.selectedOptions[0].dataset.cost);const size=Number(form.querySelector('[name="vehicle"]:checked').value);let extras=0;form.querySelectorAll('[name="extra"]:checked').forEach(x=>extras+=Number(x.value));const total=Math.round(val*size/50)*50+extras;document.getElementById('od-total').textContent=money(total);return total;}
+        form.addEventListener('change',()=>{calc();document.getElementById('od-result').hidden=true});calc();
+        document.getElementById('od-summary').addEventListener('click',()=>{let d=new FormData(form);const service=form.querySelector('#od-service').selectedOptions[0].textContent.split(' — ')[0];const names={1:'Седан',1.2:'Кросовер',1.4:'Позашляховик'};const result=document.getElementById('od-result');result.textContent='Ваш вибір: '+service+' · '+names[d.get('vehicle')]+' · '+money(calc())+'. Це інтерактивна демонстрація; для реального запису потрібен бекенд.';result.hidden=false});
+        const range=document.getElementById('od-compare-range'),frame=document.getElementById('od-compare-frame');range?.addEventListener('input',()=>frame.style.setProperty('--compare',range.value+'%'));
+      })();
+    </script>
+    <script>
+      const header = document.querySelector<HTMLElement>("[data-header]");
+      const progress = document.querySelector<HTMLElement>("[data-reading]");
+      const updateScroll = () => {
+        header?.classList.toggle("is-scrolled", window.scrollY > 28);
+        if(progress){ const h = Math.max(1, document.documentElement.scrollHeight - window.innerHeight); progress.style.transform = `scaleX(${Math.min(1, window.scrollY / h)})`; }
+      };
+      window.addEventListener("scroll", updateScroll, { passive: true }); updateScroll();
+
+      const menuToggle = document.querySelector<HTMLButtonElement>("[data-menu-toggle]");
+      const mobileNav = document.querySelector<HTMLElement>("[data-mobile-nav]");
+      const setMenu = (open:boolean) => {
+        menuToggle?.setAttribute("aria-expanded", String(open));
+        menuToggle?.setAttribute("aria-label", open ? "Закрити меню" : "Відкрити меню");
+        header?.classList.toggle("menu-open", open);
+        if(mobileNav) mobileNav.inert = !open;
+        document.body.classList.toggle("nav-locked", open);
+      };
+      menuToggle?.addEventListener("click",()=>setMenu(menuToggle.getAttribute("aria-expanded") !== "true"));
+      mobileNav?.querySelectorAll("a").forEach(a=>a.addEventListener("click",()=>setMenu(false)));
+      window.addEventListener("keydown", e=>{if(e.key==="Escape")setMenu(false)});
+      window.addEventListener("resize",()=>{if(window.innerWidth>850)setMenu(false)},{passive:true});
+
+      const revealEls = document.querySelectorAll<HTMLElement>("[data-reveal]");
+      if("IntersectionObserver" in window && !window.matchMedia("(prefers-reduced-motion: reduce)").matches){
+        const observer = new IntersectionObserver(entries=>entries.forEach(entry=>{
+          if(entry.isIntersecting) entry.target.classList.add("in-view");
+          else if(entry.boundingClientRect.top > 0) entry.target.classList.remove("in-view");
+        }),{threshold:0.08,rootMargin:"0px 0px -35px 0px"});
+        revealEls.forEach(el=>observer.observe(el));
+      } else revealEls.forEach(el=>el.classList.add("in-view"));
+
+      const filterButtons = document.querySelectorAll<HTMLButtonElement>("[data-filter]");
+      const galleryItems = document.querySelectorAll<HTMLElement>("[data-gallery] .gallery-item");
+      filterButtons.forEach(button=>button.addEventListener("click",()=>{
+        const filter = button.dataset.filter;
+        filterButtons.forEach(b=>{const selected=b===button; b.classList.toggle("is-active",selected);b.setAttribute("aria-pressed",String(selected));});
+        galleryItems.forEach(item=>{item.hidden = filter!=="all" && item.dataset.category!==filter;});
+      }));
+
+      const lightbox = document.querySelector<HTMLDialogElement>("[data-lightbox]");
+      const lbImage = document.querySelector<HTMLImageElement>("[data-lightbox-img]");
+      const lbTitle = document.querySelector<HTMLElement>("[data-lightbox-title]");
+      const lbCategory = document.querySelector<HTMLElement>("[data-lightbox-category]");
+      galleryItems.forEach(item=>item.addEventListener("click",()=>{
+        if(!lightbox || !lbImage || !lightbox.showModal)return;
+        const image = item.querySelector("img");
+        lbImage.src = item.dataset.image || "";
+        lbImage.alt = image?.alt || "Фото з галереї";
+        if(lbTitle)lbTitle.textContent = item.dataset.title || "";
+        if(lbCategory)lbCategory.textContent = item.dataset.category || "";
+        lightbox.showModal();
+      }));
+      lightbox?.addEventListener("click",e=>{if(e.target===lightbox)lightbox.close()});
+
+      const demoBar = document.querySelector<HTMLElement>("[data-demo-bar]");
+      const demoCollapse = document.querySelector<HTMLButtonElement>("[data-demo-collapse]");
+      demoCollapse?.addEventListener("click",()=>{
+        const collapsed=demoBar?.classList.toggle("is-collapsed") ?? false;
+        demoCollapse.setAttribute("aria-expanded",String(!collapsed));
+        demoCollapse.setAttribute("aria-label",collapsed?"Розгорнути демопанель":"Згорнути демопанель");
+      });
+    </script>
+  </body>
+</html>

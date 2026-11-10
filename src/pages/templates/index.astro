@@ -1,0 +1,100 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import "../../styles/templates-showcase.css";
+
+const concepts = [
+  { id: "detailing", num: "01", brand: "OBSIDIAN", name: "Автодетейлінг", type: "Лендинг", tag: "landing", theme: "dark", img: "/images/templates/detailing.webp", route: "/demo/detailing/", description: "Кінематографічна презентація студії з інтерактивним підбором послуг і калькулятором вартості.", features: ["Калькулятор вартості", "Порівняння до/після", "Адаптивна галерея"] },
+  { id: "coffee", num: "02", brand: "BREW & BLOOM", name: "Кав’ярня", type: "Багатосторінковий", tag: "multipage", theme: "warm", img: "/images/templates/coffee.webp", route: "/demo/coffee/", description: "Атмосферний сайт кав’ярні з меню, пошуком, кошиком, подіями та демонстраційним бронюванням.", features: ["7 сторінок", "Інтерактивне меню", "Кошик і бронювання"] },
+  { id: "cleaning", num: "03", brand: "LUMA CLEAN", name: "Клінінг", type: "Багатосторінковий", tag: "multipage", theme: "light", img: "/images/templates/cleaning.webp", route: "/demo/cleaning/", description: "Світлий сервісний сайт із динамічним розрахунком прибирання, тарифами та сценарієм запису.", features: ["7 сторінок", "Розрахунок вартості", "Онлайн-запис"] },
+  { id: "beauty", num: "04", brand: "AURA ATELIER", name: "Салон краси", type: "Багатосторінковий", tag: "multipage", theme: "rose", img: "/images/templates/beauty.webp", route: "/demo/beauty/", description: "Редакційна естетика, каталог процедур, профілі майстрів і інтерактивний запис на візит.", features: ["7 сторінок", "Вибір майстра", "Запис за часом"] },
+  { id: "commerce", num: "05", brand: "FORM / OBJECTS", name: "Інтернет-магазин", type: "E-commerce демо", tag: "commerce", theme: "electric", img: "/images/templates/commerce.webp", route: "/demo/commerce/", description: "Дизайнерський магазин з каталогом, фільтрами, обраним, кошиком та демонстраційним чекаутом.", features: ["Каталог і пошук", "Обране й кошик", "Демо-оформлення"] },
+];
+---
+
+<BaseLayout title="Приклади сайтів та живі демо — Noryvio" description="Перегляньте п’ять інтерактивних прикладів сайтів Noryvio: автодетейлінг, кав’ярня, клінінг, салон краси та інтернет-магазин. Відкрийте демо і оберіть напрям для свого бізнесу.">
+  <div class="nvshow">
+    <div class="nvshow__ambient" aria-hidden="true"></div>
+    <section class="nvshow__hero" aria-labelledby="show-title">
+      <div class="nvshow__shell">
+        <div class="nvshow__eyebrow"><span class="nvshow__status-dot"></span> NORYVIO / LIVE SHOWCASE <span class="nvshow__eyebrow-end">ВИБРАНІ КОНЦЕПТИ 2026</span></div>
+        <div class="nvshow__hero-layout">
+          <div>
+            <h1 id="show-title">Не просто макети.<br/><em>Сайти, які можна</em><br/>відкрити й спробувати.</h1>
+            <p class="nvshow__lead">П’ять різних підходів до сайту для бізнесу. Переходьте в живу демонстрацію, натискайте кнопки, досліджуйте інтерфейс і уявіть, як це може працювати для вас.</p>
+            <div class="nvshow__hero-actions">
+              <a class="nvshow__btn nvshow__btn--solid" href="#concepts">Дивитися проєкти <span aria-hidden="true">↘</span></a>
+              <a class="nvshow__btn nvshow__btn--outline" href="/#contacts">Обговорити свій сайт <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+          <div class="nvshow__hero-note" aria-label="Про колекцію">
+            <div class="nvshow__note-number">05<span> / live</span></div>
+            <p>Не скриншоти, а окремі адаптивні сайти з інтерактивними можливостями.</p>
+            <span class="nvshow__note-graphic" aria-hidden="true">↗</span>
+          </div>
+        </div>
+        <div class="nvshow__hero-bottom"><span>SCROLL TO EXPLORE</span><span>ЛЕНДИНГИ · БІЗНЕС-САЙТИ · МАГАЗИНИ</span></div>
+      </div>
+    </section>
+
+    <section id="concepts" class="nvshow__portfolio" aria-labelledby="concepts-heading">
+      <div class="nvshow__shell">
+        <div class="nvshow__section-header">
+          <div><div class="nvshow__kicker">01 / НАШІ КОНЦЕПТИ</div><h2 id="concepts-heading">Знайдіть свій <span>формат.</span></h2></div>
+          <p>Від виразного лендингу до багатосторінкового сайту й магазину. У кожного концепту — власний характер і сценарій взаємодії.</p>
+        </div>
+        <div class="nvshow__filters" role="group" aria-label="Фільтр проєктів">
+          <button class="nvshow__filter is-active" type="button" data-filter="all" aria-pressed="true">Усі проєкти <span>05</span></button>
+          <button class="nvshow__filter" type="button" data-filter="landing" aria-pressed="false">Лендинги <span>01</span></button>
+          <button class="nvshow__filter" type="button" data-filter="multipage" aria-pressed="false">Багатосторінкові <span>03</span></button>
+          <button class="nvshow__filter" type="button" data-filter="commerce" aria-pressed="false">Магазини <span>01</span></button>
+        </div>
+        <div class="nvshow__projects" id="projects-list">
+          {concepts.map((item, i) => (
+            <article class:list={["nvshow__project", {"nvshow__project--reverse": i % 2 === 1}]} data-category={item.tag}>
+              <div class="nvshow__visual" data-theme={item.theme}>
+                <img src={item.img} alt={`Попередній перегляд концепту ${item.brand} — ${item.name}`} width="1100" height="770" loading={i === 0 ? "eager" : "lazy"} decoding="async" />
+                <span class="nvshow__visual-overlay" aria-hidden="true"></span>
+                <span class="nvshow__visual-top"><span>DEMO PROJECT / {item.num}</span><span>↗</span></span>
+                <a href={item.route} class="nvshow__visual-action" aria-label={`Відкрити живий сайт ${item.brand}`}>Відкрити живе демо <span aria-hidden="true">↗</span></a>
+              </div>
+              <div class="nvshow__project-info">
+                <div class="nvshow__meta"><span>КОНЦЕПТ {item.num} / 05</span><span class="nvshow__meta-line"></span><span>{item.type}</span></div>
+                <div class="nvshow__project-title"><span>{item.brand}</span><h3>{item.name}</h3></div>
+                <p class="nvshow__description">{item.description}</p>
+                <div class="nvshow__features-label">ЩО МОЖНА СПРОБУВАТИ</div>
+                <ul class="nvshow__features">{item.features.map(feature => <li><span aria-hidden="true">✳</span>{feature}</li>)}</ul>
+                <div class="nvshow__project-actions"><a class="nvshow__btn nvshow__btn--solid" href={item.route}>Переглянути сайт <span aria-hidden="true">↗</span></a><a class="nvshow__project-order" href="/#contacts">Хочу схожий <span aria-hidden="true">→</span></a></div>
+              </div>
+            </article>
+          ))}
+        </div>
+        <p class="nvshow__disclaimer">* Це демонстраційні концепти, а не сайти реальних компаній. Запис, оформлення замовлення та розрахунки в демо працюють для ознайомлення, без реальних платежів або підтверджених бронювань.</p>
+      </div>
+    </section>
+
+    <section class="nvshow__how" aria-labelledby="how-heading"><div class="nvshow__shell"><div class="nvshow__section-header nvshow__section-header--how"><div><div class="nvshow__kicker">02 / ЯК ЦЕ ПРАЦЮЄ</div><h2 id="how-heading">Від ідеї до <span>вашого сайту.</span></h2></div></div><div class="nvshow__steps"><div><span>01</span><h3>Відкрийте демо</h3><p>Огляньте сайт на телефоні або комп’ютері. Перевірте меню, калькулятор, каталог чи запис.</p></div><div><span>02</span><h3>Оберіть напрям</h3><p>Можна взяти концепт за основу, змінити структуру, кольори, тексти й потрібні функції.</p></div><div><span>03</span><h3>Обговоримо проєкт</h3><p>Розкажіть про бізнес — ми визначимо обсяг, формат сайту та реалістичний план розробки.</p></div></div></div></section>
+
+    <section class="nvshow__final" aria-labelledby="final-heading"><div class="nvshow__shell"><div class="nvshow__final-inner"><div class="nvshow__kicker">Є ІДЕЯ? ДАВАЙТЕ РЕАЛІЗУЄМО</div><h2 id="final-heading">Наступний сильний сайт<br/><em>може бути вашим.</em></h2><p>Не обов’язково обирати готовий вигляд один в один. Створимо рішення під ваш бізнес і задачі.</p><a href="/#contacts" class="nvshow__btn nvshow__btn--solid">Обговорити проєкт <span aria-hidden="true">↗</span></a><span class="nvshow__final-orbit" aria-hidden="true"></span></div></div></section>
+  </div>
+</BaseLayout>
+
+<script>
+  import { registerReveals } from "../../scripts/reveal";
+
+  const initShowcase = () => {
+    const root = document.querySelector<HTMLElement>(".nvshow");
+    if (!root || root.dataset.initialized === "true") return;
+    root.dataset.initialized = "true";
+    const buttons = Array.from(root.querySelectorAll<HTMLButtonElement>("[data-filter]"));
+    const projects = Array.from(root.querySelectorAll<HTMLElement>("[data-category]"));
+    buttons.forEach(button => button.addEventListener("click", () => {
+      const category = button.dataset.filter || "all";
+      buttons.forEach(el => {const active = el === button; el.classList.toggle("is-active", active); el.setAttribute("aria-pressed", String(active));});
+      projects.forEach(project => {project.hidden = category !== "all" && project.dataset.category !== category;});
+    }));
+    // Stable bidirectional reveal; no classes are toggled on visibility thresholds.
+    registerReveals(root, ".nvshow__project, .nvshow__steps > div", "data-reveal-delay", 680);
+  };
+  document.addEventListener("astro:page-load", initShowcase);
+  initShowcase();
+</script>

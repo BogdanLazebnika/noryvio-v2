@@ -1,0 +1,182 @@
+---
+import "./Footer.css";
+import Icon from "./ui/Icon.astro";
+import { getLangFromUrl, localizedPath } from "../i18n/utils";
+
+const lang = getLangFromUrl(Astro.url);
+
+const messages = {
+  uk: {
+    footerLabel: "Нижня частина сайту Noryvio",
+    kicker: "NORYVIO / ПОЧНІМО З ІДЕЇ",
+    title: "Ваш наступний крок —",
+    titleAccent: "сильний сайт.",
+    lead: "Розкажіть нам про ваш бізнес. Допоможемо обрати формат сайту, пояснимо умови та узгодимо наступні кроки.",
+    mainCta: "Обговорити проєкт",
+    brandDescription: "Сайти для бізнесу з продуманим дизайном, зрозумілою оплатою та підтримкою після запуску.",
+    brandChip: "Від ідеї до запуску",
+    navigation: "Навігація",
+    useful: "Корисне",
+    legalTitle: "Документи",
+    privacy: "Політика конфіденційності",
+    terms: "Умови співпраці",
+    paymentTerms: "Оплата та скасування",
+    contactTitle: "Є питання?",
+    contactDescription: "Залиште заявку у формі та оберіть зручний спосіб зв’язку.",
+    contactLink: "Залишити заявку",
+    home: "Головна",
+    templates: "Концепти",
+    pricing: "Ціни",
+    process: "Як ми працюємо",
+    faq: "Часті запитання",
+    contacts: "Контакти",
+    catalog: "Каталог дизайнів",
+    calculator: "Калькулятор вартості",
+    copyright: "Усі права захищено.",
+    bottom: "Розробка сайтів з увагою до деталей."
+  },
+  en: {
+    footerLabel: "Noryvio website footer",
+    kicker: "NORYVIO / START WITH AN IDEA",
+    title: "Your next step —",
+    titleAccent: "a better website.",
+    lead: "Tell us about your business. We'll help you choose a website format, explain the process and agree on the next steps.",
+    mainCta: "Discuss your project",
+    brandDescription: "Websites for businesses, with thoughtful design, clear payments and support after launch.",
+    brandChip: "From idea to launch",
+    navigation: "Navigation",
+    useful: "Explore",
+    legalTitle: "Legal documents (in Ukrainian)",
+    privacy: "Privacy policy",
+    terms: "Terms of service",
+    paymentTerms: "Payment & cancellation",
+    contactTitle: "Have a question?",
+    contactDescription: "Send us a request and choose your preferred way to connect.",
+    contactLink: "Get in touch",
+    home: "Home",
+    templates: "Concepts",
+    pricing: "Pricing",
+    process: "Our process",
+    faq: "FAQ",
+    contacts: "Contact",
+    catalog: "Design catalogue",
+    calculator: "Price calculator",
+    copyright: "All rights reserved.",
+    bottom: "Thoughtful web design and development."
+  }
+} as const;
+
+const t = messages[lang];
+
+const homeUrl = localizedPath("/", lang);
+const contactUrl = localizedPath("/#contacts", lang);
+const pricingUrl = localizedPath("/#pricing", lang);
+const catalogUrl = localizedPath("/templates/", lang);
+
+const navigation = [
+  { label: t.home, href: homeUrl },
+  { label: t.templates, href: localizedPath("/#templates", lang) },
+  { label: t.pricing, href: pricingUrl },
+  { label: t.process, href: localizedPath("/#process", lang) },
+  { label: t.faq, href: localizedPath("/#faq", lang) },
+  { label: t.contacts, href: contactUrl }
+];
+
+const useful = [
+  { label: t.catalog, href: catalogUrl },
+  { label: t.calculator, href: pricingUrl }
+];
+
+// Legal pages are currently published only at Ukrainian-language routes.
+// Keep these exact paths until /en/ legal pages actually exist.
+const legalLinks = [
+  { label: t.privacy, href: "/privacy/" },
+  { label: t.terms, href: "/terms/" },
+  { label: t.paymentTerms, href: "/payment-terms/" }
+];
+---
+
+<footer class="nf2-footer" aria-label={t.footerLabel}>
+  <div class="nf2-ambient" aria-hidden="true"></div>
+
+  <div class="nf2-container">
+    <div class="nf2-cta" data-nf2-reveal>
+      <div class="nf2-cta__copy">
+        <p class="nf2-eyebrow">
+          <span class="nf2-eyebrow__dot" aria-hidden="true"></span>
+          {t.kicker}
+        </p>
+        <h2>
+          {t.title}
+          <span>{t.titleAccent}</span>
+        </h2>
+        <p class="nf2-cta__lead">{t.lead}</p>
+      </div>
+
+      <a class="nf2-cta__button" href={contactUrl}>
+        <span>{t.mainCta}</span>
+        <Icon name="arrow-up-right" size={20} />
+      </a>
+    </div>
+
+    <div class="nf2-main">
+      <div class="nf2-brand" data-nf2-reveal>
+        <a class="nf2-logo" href={homeUrl} aria-label={lang === "uk" ? "Noryvio — головна" : "Noryvio — home"}>
+          Noryvio<span>.</span>
+        </a>
+        <p>{t.brandDescription}</p>
+        <div class="nf2-brand__chip">
+          <Icon name="check" size={16} />
+          <span>{t.brandChip}</span>
+        </div>
+      </div>
+
+      <nav class="nf2-column" aria-label={t.navigation} data-nf2-reveal data-nf2-delay="65">
+        <h3>{t.navigation}</h3>
+        <ul>
+          {navigation.map((item) => (
+            <li><a href={item.href}>{item.label}</a></li>
+          ))}
+        </ul>
+      </nav>
+
+      <nav class="nf2-column" aria-label={t.useful} data-nf2-reveal data-nf2-delay="105">
+        <h3>{t.useful}</h3>
+        <ul>
+          {useful.map((item) => (
+            <li><a href={item.href}>{item.label}</a></li>
+          ))}
+        </ul>
+
+        <div class="nf2-legal-links">
+          <h4>{t.legalTitle}</h4>
+          <ul>
+            {legalLinks.map((item) => (
+              <li><a href={item.href}>{item.label}</a></li>
+            ))}
+          </ul>
+        </div>
+      </nav>
+
+      <div class="nf2-contact" data-nf2-reveal data-nf2-delay="150">
+        <h3>{t.contactTitle}</h3>
+        <p>{t.contactDescription}</p>
+        <a href={contactUrl}>
+          {t.contactLink}
+          <Icon name="arrow-up-right" size={17} />
+        </a>
+      </div>
+    </div>
+
+    <div class="nf2-bottom" data-nf2-reveal>
+      <p>© {new Date().getFullYear()} Noryvio. {t.copyright}</p>
+      <p>{t.bottom}</p>
+    </div>
+  </div>
+</footer>
+
+<script>
+  import { registerReveals } from "../scripts/reveal";
+  const footer = document.querySelector<HTMLElement>(".nf2-footer");
+  registerReveals(footer, "[data-nf2-reveal]", "data-nf2-delay", 650);
+</script>

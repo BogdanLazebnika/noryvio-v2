@@ -1,0 +1,4 @@
+---
+import Layout from '../../../components/demos/beauty/BeautyLayout.astro';import {masters,beautyBase as base} from '../../../data/beauty';
+---
+<Layout title="Майстри" active="masters/"><section class="au-page-hero"><div class="au-wrap"><span class="au-kicker">MEET THE ARTISTS</span><h1>Майстерність в <em>деталях.</em></h1><p>Знайомтеся з демонстраційною командою AURA: у кожного — свій підхід, але спільна увага до вас.</p></div></section><section class="au-section au-sand"><div class="au-wrap au-masters-list">{masters.map((m,i)=><article class="au-master-row au-reveal"><img src={m.photo} alt={`Концептуальний портрет: ${m.name}`} loading="lazy"/><div><span class="au-kicker">0{i+1} / ARTIST</span><h2>{m.name}</h2><p class="au-master-role">{m.role}</p><p>{m.focus}. Тривалість і деталі процедур погоджуються перед записом.</p><a class="au-underlink" href={`${base}booking/?master=${m.id}`}>Записатись до майстра ↗</a></div></article>)}</div></section></Layout>

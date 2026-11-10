@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/ui/Icon.astro';
+import { blogPosts } from '../../data/blogPosts';
+import '../../styles/blog.css';
+
+const featured = blogPosts.find((post) => post.featured) ?? blogPosts[0];
+const rest = blogPosts.filter((post) => post.slug !== featured.slug);
+---
+
+<BaseLayout
+  title="Блог Noryvio — розробка сайтів, SEO та поради бізнесу"
+  description="Практичні статті Noryvio про створення сайтів, ціни, SEO та підготовку бізнесу до запуску онлайн."
+>
+  <div class="nb-blog">
+    <div class="nb-blog__ambient" aria-hidden="true"></div>
+    <div class="nb-blog__container">
+      <header class="nb-blog__header" data-nb-reveal>
+        <p class="nb-blog__eyebrow"><span aria-hidden="true"></span>NORYVIO / ЖУРНАЛ</p>
+        <h1>Ідеї, які <span>працюють онлайн.</span></h1>
+        <p class="nb-blog__lead">Розповідаємо про веброзробку простою мовою: як вибрати формат сайту, оцінити бюджет і підготувати бізнес до запуску.</p>
+      </header>
+
+      <div class="nb-blog__section-bar" data-nb-reveal>
+        <span>ВИБІР РЕДАКЦІЇ</span>
+        <span>{String(blogPosts.length).padStart(2, '0')} МАТЕРІАЛИ</span>
+      </div>
+
+      <a class="nb-featured" href={`/blog/${featured.slug}/`} data-nb-reveal>
+        <div class="nb-featured__graphic" aria-hidden="true">
+          <span class="nb-featured__ring nb-featured__ring--one"></span>
+          <span class="nb-featured__ring nb-featured__ring--two"></span>
+          <span class="nb-featured__sign">N<span>.</span></span>
+          <span class="nb-featured__graphic-caption">INSIGHTS / 001</span>
+        </div>
+        <div class="nb-featured__body">
+          <span class="nb-blog__tag">{featured.category} <span>·</span> {featured.readingMinutes} хв читання</span>
+          <h2>{featured.title}</h2>
+          <p>{featured.excerpt}</p>
+          <span class="nb-featured__link">Читати статтю <Icon name="arrow-up-right" size={20}/></span>
+        </div>
+      </a>
+
+      <div class="nb-blog__section-bar nb-blog__section-bar--secondary" data-nb-reveal>
+        <h2>Більше корисного</h2>
+        <span>ЧИТАЙТЕ У СВОЄМУ ТЕМПІ</span>
+      </div>
+      <div class="nb-blog__grid">
+        {rest.map((post, i) => (
+          <a class="nb-article-card" href={`/blog/${post.slug}/`} data-nb-reveal data-nb-delay={i * 80}>
+            <div class="nb-article-card__art" aria-hidden="true">
+              <span>{String(i + 2).padStart(2, '0')}</span>
+              <Icon name={i === 0 ? 'layers' : i === 1 ? 'globe' : 'rocket'} size={42}/>
+            </div>
+            <div class="nb-article-card__content">
+              <span class="nb-blog__tag">{post.category} <span>·</span> {post.readingMinutes} хв</span>
+              <h3>{post.title}</h3>
+              <p>{post.excerpt}</p>
+              <span class="nb-article-card__more">Читати <Icon name="arrow-up-right" size={18}/></span>
+            </div>
+          </a>
+        ))}
+      </div>
+      <aside class="nb-blog__cta" data-nb-reveal>
+        <div>
+          <span>ВАШ ПРОЄКТ / НАСТУПНИЙ КРОК</span>
+          <h2>Є ідея для сайту?</h2>
+          <p>Розкажіть, що плануєте створити. Допоможемо визначити формат і обсяг роботи.</p>
+        </div>
+        <a href="/#contacts">Обговорити ідею <Icon name="arrow-up-right" size={19}/></a>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>
+
+<script>
+  import { registerReveals } from "../../scripts/reveal";
+
+  const initBlogReveal = () => {
+    const root = document.querySelector<HTMLElement>(".nb-blog");
+    registerReveals(root, "[data-nb-reveal]", "data-nb-delay", 650);
+  };
+
+  document.addEventListener("astro:page-load", initBlogReveal);
+  initBlogReveal();
+</script>
