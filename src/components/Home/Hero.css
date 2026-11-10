@@ -704,3 +704,53 @@
     transition: none;
   }
 }
+
+
+/* ============================================
+   NORYVIO — iOS SAFARI FIRST-PAINT OPTIMIZATION
+   Restrict to mobile Safari/iOS WebKit. Keep the
+   original layout, images, color system and desktop
+   animations intact. Avoid expensive blur layers
+   being rasterized during the first screen paint.
+   ============================================ */
+@supports (-webkit-touch-callout: none) {
+  @media (max-width: 900px) {
+    /* Large blurred layers can stall compositing on iPhone. */
+    .nv2-hero__light {
+      -webkit-filter: none;
+      filter: none;
+      opacity: .22;
+    }
+
+    .nv2-hero__visual-glow {
+      -webkit-filter: none;
+      filter: none;
+      background: radial-gradient(
+        ellipse at center,
+        rgba(12, 242, 190, .14),
+        transparent 70%
+      );
+    }
+
+    .nv2-hero__arc {
+      box-shadow: none;
+    }
+
+    /* Backdrop blurs are unnecessary on a mobile first paint. */
+    .nv2-hero__strip,
+    .nv2-hero__button--secondary {
+      -webkit-backdrop-filter: none;
+      backdrop-filter: none;
+    }
+
+    /* Render the primary hero photo immediately, not in a fade. */
+    .nv2-hero__scene {
+      animation: none;
+      opacity: 1;
+    }
+
+    .nv2-hero__rock {
+      filter: none;
+    }
+  }
+}
