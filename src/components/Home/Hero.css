@@ -754,3 +754,10 @@
     }
   }
 }
+
+
+
+/* Position the picture wrapper without changing Hero composition */
+.nv2-hero__picture {
+  display: contents;
+}
