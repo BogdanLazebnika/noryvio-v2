@@ -352,49 +352,12 @@ const advantages = [
 </section>
 
 {turnstileSitekey && (
-  <script is:inline>
-    (() => {
-      const section = document.querySelector("[data-nc2-contact]");
-      if (!section) return;
-
-      let started = false;
-
-      function loadTurnstile() {
-        if (started) return;
-        started = true;
-
-        const script = document.createElement("script");
-        script.src =
-          "https://challenges.cloudflare.com/turnstile/v0/api.js";
-        script.async = true;
-        script.defer = true;
-
-        document.head.appendChild(script);
-      }
-
-      if (!("IntersectionObserver" in window)) {
-        loadTurnstile();
-        return;
-      }
-
-      const observer = new IntersectionObserver(
-        (entries) => {
-          if (!entries.some((entry) => entry.isIntersecting)) {
-            return;
-          }
-
-          observer.disconnect();
-          loadTurnstile();
-        },
-        {
-          rootMargin: "800px 0px",
-          threshold: 0
-        }
-      );
-
-      observer.observe(section);
-    })();
-  </script>
+  <script
+    is:inline
+    src="https://challenges.cloudflare.com/turnstile/v0/api.js"
+    async
+    defer
+  ></script>
 )}
 
 <script>
