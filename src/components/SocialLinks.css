@@ -1,0 +1,49 @@
+/* Noryvio social/contact UI — independent styles, no changes to forms or globals. */
+.nvs-contact, .nvs-contact *, .nvs-footer-links, .nvs-footer-links * { box-sizing: border-box; }
+.nvs-contact {
+  --nvs-mint: #24e5c1;
+  position: relative;
+  max-width: 540px;
+  margin-top: 27px;
+  padding: clamp(20px, 2.4vw, 28px);
+  border: 1px solid rgba(36,229,193,.3);
+  border-radius: 22px;
+  background: radial-gradient(ellipse 86% 80% at 100% 0%, rgba(36,229,193,.105), transparent 78%), linear-gradient(145deg, rgba(15,43,44,.92), rgba(5,20,25,.96));
+  box-shadow: inset 0 1px 0 rgba(160,255,234,.065), 0 15px 42px rgba(0,0,0,.12);
+  color: #f5fbf9;
+}
+.nvs-contact__eyebrow { display: inline-flex; align-items: center; gap: 9px; color: var(--nvs-mint); font-size: 10px; font-weight: 800; letter-spacing: .14em; }
+.nvs-contact__eyebrow span { width: 6px; height: 6px; flex: none; border-radius: 50%; background: var(--nvs-mint); box-shadow: 0 0 13px rgba(36,229,193,.55); }
+.nvs-contact__header h3 { margin: 10px 0 7px; font-size: clamp(23px, 2.5vw, 30px); font-weight: 800; letter-spacing: -.045em; line-height: 1.2; }
+.nvs-contact__header p { margin: 0; color: #a6c2c2; font-size: 12px; line-height: 1.75; }
+.nvs-email { display: flex; align-items: center; gap: 13px; min-width: 0; margin-top: 22px; padding: 15px; border: 1px solid rgba(36,229,193,.32); border-radius: 16px; background: rgba(36,229,193,.055); color: #effffb; text-decoration: none; transition: border-color .2s ease, background-color .2s ease, transform .2s ease; }
+.nvs-email:hover { border-color: rgba(36,229,193,.72); background: rgba(36,229,193,.09); transform: translateY(-2px); }
+.nvs-email__icon { flex: 0 0 42px; width: 42px; height: 42px; display: grid; place-items: center; border-radius: 13px; color: var(--nvs-mint); background: rgba(36,229,193,.11); }
+.nvs-email__icon svg { width: 23px; height: 23px; }
+.nvs-email__copy { display: grid; min-width: 0; gap: 4px; }
+.nvs-email__copy small { color: #a2c3bb; font-size: 10px; }
+.nvs-email__copy strong { font-size: clamp(12px,1.2vw,14px); font-weight: 750; overflow-wrap: anywhere; }
+.nvs-email__arrow { margin-left: auto; align-self: center; flex: none; color: var(--nvs-mint); font-size: 20px; }
+.nvs-contact__social-title { margin: 24px 0 12px; color: #c4e8e0; font-size: 11px; font-weight: 800; letter-spacing: .02em; }
+.nvs-social-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 9px; }
+.nvs-social-link { position: relative; display: grid; align-content: start; justify-items: start; gap: 7px; min-height: 111px; min-width: 0; padding: 14px 12px; border: 1px solid rgba(161,226,214,.17); border-radius: 15px; color: #e5faf5; background: rgba(255,255,255,.018); text-decoration: none; transition: transform .2s ease, background-color .2s ease, border-color .2s ease, box-shadow .2s ease; }
+.nvs-social-link:hover { transform: translateY(-3px); background: rgba(36,229,193,.065); border-color: rgba(36,229,193,.52); box-shadow: 0 8px 28px rgba(0,0,0,.17); }
+.nvs-social-link__icon { width: 24px; height: 24px; color: var(--nvs-mint); }
+.nvs-social-link__icon svg { display: block; width: 100%; height: 100%; }
+.nvs-social-link strong { font-size: 12px; font-weight: 800; line-height: 1.2; }
+.nvs-social-link small { padding-right: 5px; color: #9fb8b8; font-size: 10px; line-height: 1.45; }
+.nvs-social-link__arrow { position: absolute; right: 11px; top: 13px; color: #81bdb2; font-size: 13px; }
+.nvs-contact a:focus-visible, .nvs-footer-links a:focus-visible { outline: 2px solid #6bf6d8; outline-offset: 4px; }
+
+/* Compact footer variant — legible contacts without extra navigation columns. */
+.nvs-footer-links { display: grid; justify-items: start; gap: 15px; margin-top: 15px; }
+.nvs-footer-email { display: inline-flex !important; align-items: center; gap: 9px; min-width: 0; margin: 0 !important; color: #c6f6e8 !important; font-size: 12px !important; font-weight: 750 !important; line-height: 1.5; text-decoration: none; overflow-wrap: anywhere; }
+.nvs-footer-email:hover { color: #6bf6d8 !important; }
+.nvs-footer-email svg { width: 17px; height: 17px; flex: none; color: #24e5c1; }
+.nvs-footer-socials { display: flex; flex-wrap: wrap; align-items: center; gap: 9px; }
+.nvs-footer-social { display: grid !important; place-items: center; width: 41px; height: 41px; margin: 0 !important; border: 1px solid rgba(36,229,193,.28); border-radius: 12px; background: rgba(36,229,193,.06); color: #bceade !important; transition: transform .2s ease, border-color .2s ease, background-color .2s ease !important; }
+.nvs-footer-social:hover { transform: translateY(-2px); border-color: #24e5c1; background: rgba(36,229,193,.16); color: #24e5c1 !important; }
+.nvs-footer-social svg { display: block; width: 20px; height: 20px; }
+
+@media (max-width: 520px) { .nvs-social-grid { grid-template-columns: 1fr; gap: 8px; } .nvs-social-link { min-height: 76px; padding: 12px 15px; grid-template-columns: 26px 1fr; grid-template-rows: auto auto; column-gap: 12px; align-content: center; } .nvs-social-link__icon { grid-row: 1 / 3; } .nvs-social-link small { grid-column: 2; font-size: 10px; } .nvs-contact { margin-top: 23px; padding: 19px 16px; } }
+@media (prefers-reduced-motion: reduce) { .nvs-email, .nvs-social-link, .nvs-footer-social { transition: none !important; } .nvs-email:hover, .nvs-social-link:hover, .nvs-footer-social:hover { transform: none; } }

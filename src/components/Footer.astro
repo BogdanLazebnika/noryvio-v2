@@ -1,5 +1,6 @@
 ---
 import "./Footer.css";
+import SocialLinks from "./SocialLinks.astro";
 import Icon from "./ui/Icon.astro";
 import { getLangFromUrl, localizedPath } from "../i18n/utils";
 
@@ -161,6 +162,7 @@ const legalLinks = [
       <div class="nf2-contact" data-nf2-reveal data-nf2-delay="150">
         <h3>{t.contactTitle}</h3>
         <p>{t.contactDescription}</p>
+        <SocialLinks variant="footer" lang={lang} />
         <a href={contactUrl}>
           {t.contactLink}
           <Icon name="arrow-up-right" size={17} />
@@ -176,7 +178,72 @@ const legalLinks = [
 </footer>
 
 <script>
-  import { registerReveals } from "../scripts/reveal";
   const footer = document.querySelector<HTMLElement>(".nf2-footer");
-  registerReveals(footer, "[data-nf2-reveal]", "data-nf2-delay", 650);
+
+  if (
+    footer &&
+    "IntersectionObserver" in window &&
+    typeof HTMLElement.prototype.animate === "function"
+  ) {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const targets = Array.from(
+      footer.querySelectorAll<HTMLElement>("[data-nf2-reveal]")
+    );
+    const inView = new Set<HTMLElement>();
+
+    let previousScrollY = window.scrollY;
+    let direction = 1;
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        const y = window.scrollY;
+        if (Math.abs(y - previousScrollY) > 3) {
+          direction = y > previousScrollY ? 1 : -1;
+        }
+        previousScrollY = y;
+      },
+      { passive: true }
+    );
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const element = entry.target as HTMLElement;
+
+          if (!entry.isIntersecting) {
+            inView.delete(element);
+            continue;
+          }
+          if (inView.has(element)) continue;
+          inView.add(element);
+          if (reducedMotion.matches) continue;
+
+          const numericDelay = Number(element.dataset.nf2Delay || "0");
+          const delay = Number.isFinite(numericDelay)
+            ? Math.min(Math.max(numericDelay, 0), 180)
+            : 0;
+
+          element.animate(
+            [
+              {
+                opacity: 0.65,
+                transform: `translate3d(0, ${direction > 0 ? 20 : -16}px, 0)`
+              },
+              { opacity: 1, transform: "translate3d(0, 0, 0)" }
+            ],
+            {
+              duration: 650,
+              delay,
+              easing: "cubic-bezier(.2,.8,.2,1)",
+              fill: "backwards"
+            }
+          );
+        }
+      },
+      { threshold: 0.08, rootMargin: "-12px 0px -12px 0px" }
+    );
+
+    targets.forEach((target) => observer.observe(target));
+  }
 </script>

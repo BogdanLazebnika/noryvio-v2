@@ -1,5 +1,6 @@
 ---
 import "./Contact.css";
+import SocialLinks from "../SocialLinks.astro";
 import Icon from "../ui/Icon.astro";
 
 const endpoint = import.meta.env.PUBLIC_CONTACT_ENDPOINT || "";
@@ -108,6 +109,9 @@ const advantages = [
             </p>
           </div>
         </div>
+
+        <!-- Direct contact and verified Noryvio social destinations. Form remains unchanged. -->
+        <SocialLinks variant="contact" lang="uk" />
       </div>
 
       <!-- FORM / RIGHT COLUMN -->
@@ -289,8 +293,7 @@ const advantages = [
             />
             <span>
               Погоджуюся на обробку наданих контактних даних
-              для відповіді на моє звернення відповідно до
-              <a href="/privacy/" target="_blank" rel="noopener noreferrer">Політики конфіденційності</a>. *
+              для відповіді на моє звернення. *
             </span>
           </label>
 
@@ -561,9 +564,86 @@ const advantages = [
 </script>
 
 
-<!-- Stable scroll reveals. Contact form submission logic above is untouched. -->
+<!-- Decorative scroll reveals; submission logic above is preserved verbatim. -->
 <script>
-  import { registerReveals } from "../../scripts/reveal";
-  const section = document.querySelector<HTMLElement>("[data-nc2-contact]");
-  registerReveals(section, "[data-nc2-reveal]", "data-nc2-delay", 690);
+  const contactSection = document.querySelector<HTMLElement>(
+    "[data-nc2-contact]"
+  );
+
+  if (
+    contactSection &&
+    "IntersectionObserver" in window &&
+    typeof HTMLElement.prototype.animate === "function"
+  ) {
+    const motionPreference = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    );
+
+    const targets = Array.from(
+      contactSection.querySelectorAll<HTMLElement>("[data-nc2-reveal]")
+    );
+
+    const alreadyInView = new Set<HTMLElement>();
+    const animations = new WeakMap<HTMLElement, Animation>();
+    let previousY = window.scrollY;
+    let scrollDirection = 1;
+
+    window.addEventListener(
+      "scroll",
+      () => {
+        const currentY = window.scrollY;
+        if (Math.abs(currentY - previousY) > 3) {
+          scrollDirection = currentY > previousY ? 1 : -1;
+        }
+        previousY = currentY;
+      },
+      { passive: true }
+    );
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        for (const entry of entries) {
+          const element = entry.target as HTMLElement;
+
+          if (!entry.isIntersecting) {
+            alreadyInView.delete(element);
+            continue;
+          }
+
+          if (alreadyInView.has(element)) continue;
+          alreadyInView.add(element);
+
+          if (motionPreference.matches) continue;
+
+          const rawDelay = Number(element.dataset.nc2Delay || "0");
+          const delay = Number.isFinite(rawDelay)
+            ? Math.min(Math.max(rawDelay, 0), 200)
+            : 0;
+
+          animations.get(element)?.cancel();
+
+          const animation = element.animate(
+            [
+              {
+                opacity: 0.68,
+                transform: `translate3d(0, ${scrollDirection > 0 ? 22 : -16}px, 0)`
+              },
+              { opacity: 1, transform: "translate3d(0, 0, 0)" }
+            ],
+            {
+              duration: 690,
+              delay,
+              easing: "cubic-bezier(.2,.8,.2,1)",
+              fill: "backwards"
+            }
+          );
+
+          animations.set(element, animation);
+        }
+      },
+      { threshold: 0.06, rootMargin: "-22px 0px -22px 0px" }
+    );
+
+    targets.forEach((target) => observer.observe(target));
+  }
 </script>

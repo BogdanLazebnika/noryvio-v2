@@ -1,0 +1,87 @@
+---
+import "./SocialLinks.css";
+
+interface Props {
+  variant?: "contact" | "footer";
+  lang?: "uk" | "en";
+}
+
+const { variant = "contact", lang = "uk" } = Astro.props;
+const isUk = lang === "uk";
+
+// Single source of truth for public destinations. No placeholders.
+const email = "noryvio.dev@gmail.com";
+const profiles = [
+  {
+    key: "instagram",
+    name: "Instagram",
+    href: "https://www.instagram.com/noryvio.dev/",
+    detail: isUk ? "Дизайн і приклади сайтів" : "Design and website concepts"
+  },
+  {
+    key: "tiktok",
+    name: "TikTok",
+    href: "https://www.tiktok.com/@noryvio.dev",
+    detail: isUk ? "Короткі відео та процес" : "Short videos and process"
+  },
+  {
+    key: "youtube",
+    name: "YouTube",
+    href: "https://www.youtube.com/channel/UC09TN4XFNVOd3yU7Wiilr4Q",
+    detail: isUk ? "Відео про веброзробку" : "Web development videos"
+  }
+] as const;
+---
+
+{variant === "contact" ? (
+  <aside class="nvs-contact" aria-label={isUk ? "Контакти та соцмережі Noryvio" : "Noryvio contact and social channels"} data-nc2-reveal>
+    <div class="nvs-contact__header">
+      <span class="nvs-contact__eyebrow"><span aria-hidden="true"></span>NORYVIO / CONNECT</span>
+      <h3>{isUk ? "Будьмо на зв’язку." : "Let's stay connected."}</h3>
+      <p>{isUk ? "Напишіть напряму або подивіться, над чим ми працюємо." : "Email us directly or discover what we're building."}</p>
+    </div>
+
+    <a class="nvs-email" href={`mailto:${email}`} aria-label={isUk ? `Написати на пошту ${email}` : `Email ${email}`}>
+      <span class="nvs-email__icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+      </span>
+      <span class="nvs-email__copy">
+        <small>{isUk ? "Напишіть нам" : "Email us"}</small>
+        <strong>{email}</strong>
+      </span>
+      <span class="nvs-email__arrow" aria-hidden="true">↗</span>
+    </a>
+
+    <div class="nvs-contact__social-title">{isUk ? "Слідкуйте за Noryvio" : "Follow Noryvio"}</div>
+    <div class="nvs-social-grid">
+      {profiles.map((platform) => (
+        <a class={`nvs-social-link nvs-social-link--${platform.key}`} href={platform.href} target="_blank" rel="noopener noreferrer" aria-label={`${platform.name} Noryvio — ${isUk ? "відкрити в новій вкладці" : "open in a new tab"}`}>
+          <span class="nvs-social-link__icon" aria-hidden="true">
+            {platform.key === "instagram" && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>}
+            {platform.key === "tiktok" && <svg viewBox="0 0 24 24" fill="currentColor"><path d="M15.8 2h-3.2v13.1a3 3 0 1 1-2.6-3V8.9a6.1 6.1 0 1 0 5.8 6.1V8.3a8.4 8.4 0 0 0 5 1.6V6.7c-2.7-.1-4.7-1.9-5-4.7Z"/></svg>}
+            {platform.key === "youtube" && <svg viewBox="0 0 24 24" fill="none"><rect x="2" y="5" width="20" height="14" rx="5" fill="currentColor"/><path d="m10 8.7 6 3.3-6 3.3V8.7Z" fill="#071c1d"/></svg>}
+          </span>
+          <strong>{platform.name}</strong>
+          <small>{platform.detail}</small>
+          <span class="nvs-social-link__arrow" aria-hidden="true">↗</span>
+        </a>
+      ))}
+    </div>
+  </aside>
+) : (
+  <div class="nvs-footer-links" aria-label={isUk ? "Прямі контакти Noryvio" : "Noryvio direct contact"}>
+    <a class="nvs-footer-email" href={`mailto:${email}`}>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m4 7 8 6 8-6"/></svg>
+      <span>{email}</span>
+    </a>
+    <nav class="nvs-footer-socials" aria-label={isUk ? "Соціальні мережі Noryvio" : "Noryvio social media"}>
+      {profiles.map((platform) => (
+        <a class={`nvs-footer-social nvs-footer-social--${platform.key}`} href={platform.href} target="_blank" rel="noopener noreferrer" title={platform.name} aria-label={`${platform.name} Noryvio (${isUk ? "нова вкладка" : "new tab"})`}>
+          {platform.key === "instagram" && <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.3" cy="6.8" r="1" fill="currentColor" stroke="none"/></svg>}
+          {platform.key === "tiktok" && <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M15.8 2h-3.2v13.1a3 3 0 1 1-2.6-3V8.9a6.1 6.1 0 1 0 5.8 6.1V8.3a8.4 8.4 0 0 0 5 1.6V6.7c-2.7-.1-4.7-1.9-5-4.7Z"/></svg>}
+          {platform.key === "youtube" && <svg viewBox="0 0 24 24" fill="none" aria-hidden="true"><rect x="2" y="5" width="20" height="14" rx="5" fill="currentColor"/><path d="m10 8.7 6 3.3-6 3.3V8.7Z" fill="#071c1d"/></svg>}
+        </a>
+      ))}
+    </nav>
+  </div>
+)}
