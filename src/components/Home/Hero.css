@@ -352,7 +352,7 @@
   height: auto;
   object-fit: contain;
 
-  animation: nv2-hero-scene-enter 950ms ease-out both;
+  animation: none;
 }
 
 .nv2-hero__rock {
